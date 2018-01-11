@@ -1,19 +1,45 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Carousel, CarouselProps } from 'react-responsive-carousel';
+import DayCard from './day-card/DayCard';
+import { CardCarouselType } from '../../Models/Carousel';
+
+import './Home.css';
+import '../../../node_modules/react-responsive-carousel/lib/styles/carousel.min.css';
+
+const CardCarousel: CardCarouselType<CarouselProps> = Carousel as CardCarouselType<CarouselProps>;
+
+/**
+ * using https://github.com/leandrowd/react-responsive-carousel
+ */
+
+// Some mock meals
+const meals = ['meal1', 'meal2', 'meal3', 'meal4', 'meal5'];
 
 class Home extends Component {
     public render() {
         return (
             <div className="Home">
-                <h2>Welcome to React</h2>
-                <ul>
-                    <li>
-                        <Link to={`/calendar`}>
-                            Go to calendar
-                        </Link>
-                    </li>
-                </ul>
+                <Link to={`/calendar`} className="nav-link">
+                    Go to calendar
+                </Link>
+                <CardCarousel
+                    centerMode={true}
+                    centerSlidePercentage={40}
+                    dynamicHeight={true}
+                    showStatus={false}
+                    showThumbs={false}
+                >
+                    {
+                        // Mock some cards for now
+                        meals.map((m) => (
+                            <div key={m}>
+                                <DayCard />
+                            </div>
+                        ))
+                    }
+                </CardCarousel>
             </div>
         );
     }

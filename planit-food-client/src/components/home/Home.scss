@@ -1,0 +1,28 @@
+@import '../../styles/mixins.scss';
+.Home {
+
+    .nav-link {
+        @include nav-item;
+    }
+
+    .carousel.carousel-slider {
+        position: absolute;
+        display: flex;
+        top: 50px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 50px;
+    }
+
+    .carousel .slide {
+        display: flex;
+        align-items: center;
+        background: transparent;
+        padding: 20px;
+
+        &:not(.selected) {
+            transform: scale(0.8);
+        }
+    }
+}

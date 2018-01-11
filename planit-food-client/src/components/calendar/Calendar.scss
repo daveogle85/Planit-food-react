@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+
 .big-calendar {
     position: absolute;
     left: 0;
@@ -8,10 +10,5 @@
 }
 
 .nav-link {
-    float: left;
-    padding: 40px 0 0 50px;
-    text-decoration: none;
-    font-weight: 500;
-    color: #918d8d;
-    cursor: pointer;
+    @include nav-item;
 }
