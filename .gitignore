@@ -1,3 +1,4 @@
 planit-food-server/node_modules/
 planit-food-server/dist/models/websocketModel.js
 planit-food-server/dist/
+planit-food-server/.env

@@ -39,9 +39,8 @@ module.exports = function(port, callback, rootUrl) {
     // Connect to db
     db.connect(function(err, cb) {
         if (err) {
-            exitServer("Unable to connect to Database.");
-        } else {
-            // pages.index();
+            //exitServer("Unable to connect to Database.");
+            winston.warn("Unable to connect to Database.");
         }
     });
 
