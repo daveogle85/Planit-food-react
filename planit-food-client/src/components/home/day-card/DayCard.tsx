@@ -1,20 +1,33 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, MouseEvent } from 'react';
+import MealItem from './MealItem';
+import { Meal } from '../../../Models/DayCard';
 
 import './DayCard.css';
-import MealItem from './MealItem';
 
 interface DayCardProps {
     date?: Date;
-    mealList: string[];
-    isEditing?: boolean;
+    mealList: Meal[];
+    allowEditing?: boolean;
+}
+
+interface DayCardState {
+    mealList: Meal[];
 }
 
 export const dayCardWidth = 320;
 
-class DayCard extends Component<DayCardProps> {
+class DayCard extends Component<DayCardProps, DayCardState> {
+
+    public constructor(props: DayCardProps) {
+        super(props);
+        this.state = {
+            mealList: props.mealList
+        };
+    }
 
     public render() {
+
         return (
             <div className="day-card">
                 <div className="day-card-date">
@@ -23,19 +36,45 @@ class DayCard extends Component<DayCardProps> {
                 </div>
                 <form className="meal-list">
                     <ul>
-                        {this.props.mealList.map((meal, i) =>
+                        {this.state.mealList.map((meal, i) =>
                             <MealItem
-                                key={meal + i}
-                                id={i}
-                                value={meal}
+                                key={meal.id}
+                                allowEditing={!!this.props.allowEditing}
+                                isEditing={meal.isPlaceholder}
+                                id={meal.id}
+                                value={meal.name}
                                 onEditSubmit={(newValue: string) => null}
-                                onDelete={(id) => null}
+                                onDelete={this.removeMeal}
                             />
                         )}
+                        {this.props.allowEditing && this.renderAddNewCardButton()}
                     </ul>
                 </form>
             </div >
         );
+    }
+
+    private renderAddNewCardButton() {
+        return (
+            <li className="add-a-meal">
+                <span>
+                    <p>Add a new meal</p>
+                    <button onClick={this.addAMeal}>+</button>
+                </span>
+            </li>
+        );
+    }
+
+    private addAMeal = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        return this.setState({
+            mealList: this.state.mealList.concat({ id: 'new-meal', name: '', isPlaceholder: true })
+        });
+    }
+
+    private removeMeal = (id: string) => {
+        // TODO Call server
+        alert('meal removed');
     }
 }
 

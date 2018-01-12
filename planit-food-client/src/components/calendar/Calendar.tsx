@@ -38,7 +38,7 @@ class CalendarPage extends Component<BigCalendarProps, CalendarPageState> {
                 </Link>
                 <div className="big-calendar">
                     <BigCalendar
-                        views={['month']}    
+                        views={['month']}
                         onNavigate={() => null}
                         events={[]}
                         selectable={true}
@@ -91,17 +91,18 @@ class CalendarPage extends Component<BigCalendarProps, CalendarPageState> {
 
     private renderModal = () => ([
         (
-        <DayCard
-            mealList={['meal1']}    
-            key="day-card"
-        />
+            <DayCard
+                mealList={[{ id: '1', name: 'meal1' }]}
+                key="day-card"
+                allowEditing={true}
+            />
         ),
         (
             <div className="modal-buttons" key="buttons">
-            <button>Expand</button>
-            <button onClick={() => this.setState({ modalOpen: false })}>Close</button>
+                <button>Expand</button>
+                <button onClick={() => this.setState({ modalOpen: false })}>Close</button>
             </div>
-        )    
+        )
     ])
 }
 

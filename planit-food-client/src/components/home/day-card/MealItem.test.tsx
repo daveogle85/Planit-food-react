@@ -6,7 +6,8 @@ it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(
         <MealItem
-            id={1}
+            allowEditing={false}
+            id={"1"}
             value=""
             onEditSubmit={(v: string) => null}
             onDelete={(id) => null}

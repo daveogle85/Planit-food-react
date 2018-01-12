@@ -4,10 +4,11 @@ import { Component, MouseEvent } from 'react';
 import './MealItem.css';
 
 interface MealItemProps {
-    id: number | string;
+    id: string;
     value: string;
     onEditSubmit: (newValue: string) => void;
-    onDelete: (id: number | string) => void;
+    onDelete: (id: string) => void;
+    allowEditing: boolean;
     isEditing?: boolean;
 }
 
@@ -35,15 +36,24 @@ class MealItem extends Component<MealItemProps, MealItemState> {
                     <input
                         ref={(el: HTMLInputElement) => this.input = el}
                         disabled={!this.state.isEditing}
-                        className={`meal-input ${this.state.isEditing ? 'editing' : ''}`}
+                        className={`meal-input ${this.state.isEditing ? 'editing' : ''}`/*` <- chrome dev fix */}
                         type="text"
                         value={this.state.value}
                         onChange={() => this.input && this.setState({ value: this.input.value })}
                     />
-                    <button className="edit-button" onClick={this.onEditClicked}>
-                        {this.state.isEditing ? 'Accept' : 'Edit'}
-                    </button>
-                    <button className="delete-button" onClick={this.onDeleteClicked}>X</button>
+                    {
+                        this.props.allowEditing ? ([
+                            <button key="edit-button" className="edit-button" onClick={this.onEditClicked}>
+                                {this.state.isEditing ? 'Accept' : 'Edit'}
+                            </button>,
+                            <button
+                                key="delete-button"
+                                className="delete-button"
+                                onClick={this.onDeleteClicked}
+                            >X
+                            </button>
+                        ]) : null
+                    }
                 </span>
             </li>
         );
@@ -58,9 +68,10 @@ class MealItem extends Component<MealItemProps, MealItemState> {
         this.setState({ isEditing: true });
     }
 
-    private onDeleteClicked = (e: MouseEvent<HTMLButtonElement>) =>
-        e.preventDefault() &&
-        this.props.onDelete(this.props.id)
+    private onDeleteClicked = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        return this.props.onDelete(this.props.id);
+    }
 }
 
 export default MealItem;

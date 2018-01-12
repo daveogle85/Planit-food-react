@@ -16,11 +16,11 @@ const CardCarousel: CardCarouselType<CarouselProps> = Carousel as CardCarouselTy
 
 // Some mock days
 const days = [
-    { meals: ['meal1'] },
-    { meals: ['meal2'] },
-    { meals: ['meal3'] },
-    { meals: ['meal4'] },
-    { meals: ['meal5'] }
+    { meals: [{id: '1', name: 'meal1'}] },
+    { meals: [{ id: '2', name: 'meal1' }] },
+    { meals: [{ id: '3', name: 'meal1' }] },
+    { meals: [{ id: '4', name: 'meal1' }, { id: '5', name: 'meal2' }] },
+    { meals: [{ id: '6', name: 'meal1' }] },
 ];
 
 class Home extends Component {

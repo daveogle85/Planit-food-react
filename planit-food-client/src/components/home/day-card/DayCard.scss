@@ -19,13 +19,16 @@
         flex-direction: column;
         justify-content: space-around;
     }
+
     .day {
         font-size: 45px;
         font-weight: 700;
     }
+
     .date {
         margin-bottom: 10px;
     }
+
     .meal-list > ul {
         padding: 10px;
         li {
@@ -33,6 +36,18 @@
             padding: 10px;
             color: #3c3e82;
             font-size: 25px;
+
+            span {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+
+    .add-a-meal {
+        p {
+            margin: 0;
+            font-size: 15px;
         }
     }
 }
