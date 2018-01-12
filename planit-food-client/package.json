@@ -1,6 +1,7 @@
 {
   "name": "planit-food-client",
   "version": "0.1.0",
+  "description": "An app to manage the weekly food shop",
   "private": true,
   "dependencies": {
     "@types/react-big-calendar": "^0.15.0",

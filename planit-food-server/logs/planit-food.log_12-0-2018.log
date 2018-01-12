@@ -1,0 +1,5 @@
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T12:00:51.100Z"}
+{"level":"info","message":"Creating schema Meal","timestamp":"2018-01-12T12:00:51.116Z"}
+{"level":"error","message":"Mongoose default connection disconnected","timestamp":"2018-01-12T12:00:52.152Z"}
+{"level":"error","message":"Mongoose default connection error: MongoError: failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]","timestamp":"2018-01-12T12:00:52.158Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:06:04.339Z"}
