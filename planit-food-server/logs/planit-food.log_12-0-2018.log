@@ -3,3 +3,24 @@
 {"level":"error","message":"Mongoose default connection disconnected","timestamp":"2018-01-12T12:00:52.152Z"}
 {"level":"error","message":"Mongoose default connection error: MongoError: failed to connect to server [localhost:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]","timestamp":"2018-01-12T12:00:52.158Z"}
 {"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:06:04.339Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:33:01.323Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:36:21.893Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:39:22.591Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:48:45.452Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:51:13.618Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:52:31.804Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:53:37.924Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:54:00.662Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:54:52.606Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:56:41.762Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:58:36.471Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T13:59:26.541Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T14:00:46.601Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T14:05:58.132Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T14:07:59.685Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T14:13:37.253Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T14:14:26.675Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T14:17:21.188Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T14:18:29.367Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T14:19:47.257Z"}
+{"level":"info","message":"Setting up server","timestamp":"2018-01-12T14:25:47.099Z"}
