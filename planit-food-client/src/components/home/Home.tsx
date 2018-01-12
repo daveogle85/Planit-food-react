@@ -14,8 +14,14 @@ const CardCarousel: CardCarouselType<CarouselProps> = Carousel as CardCarouselTy
  * using https://github.com/leandrowd/react-responsive-carousel
  */
 
-// Some mock meals
-const meals = ['meal1', 'meal2', 'meal3', 'meal4', 'meal5'];
+// Some mock days
+const days = [
+    { meals: ['meal1'] },
+    { meals: ['meal2'] },
+    { meals: ['meal3'] },
+    { meals: ['meal4'] },
+    { meals: ['meal5'] }
+];
 
 class Home extends Component {
     public render() {
@@ -32,12 +38,12 @@ class Home extends Component {
                     showThumbs={false}
                 >
                     {
-                        // Mock some cards for now
-                        meals.map((m) => (
-                            <div key={m}>
-                                <DayCard />
-                            </div>
-                        ))
+                        days.map((day, i) =>
+                            <DayCard
+                                key={i}
+                                mealList={day.meals}
+                            />
+                        )
                     }
                 </CardCarousel>
             </div>

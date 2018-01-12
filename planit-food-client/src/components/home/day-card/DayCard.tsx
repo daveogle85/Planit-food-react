@@ -2,11 +2,15 @@ import * as React from 'react';
 import { Component } from 'react';
 
 import './DayCard.css';
+import MealItem from './MealItem';
 
 interface DayCardProps {
     date?: Date;
-    mealList?: string[];
+    mealList: string[];
+    isEditing?: boolean;
 }
+
+export const dayCardWidth = 320;
 
 class DayCard extends Component<DayCardProps> {
 
@@ -17,11 +21,19 @@ class DayCard extends Component<DayCardProps> {
                     <div className="day">test</div>
                     <div className="date">test2</div>
                 </div>
-                <div className="meal-list">
+                <form className="meal-list">
                     <ul>
-                        <li>test3</li>
+                        {this.props.mealList.map((meal, i) =>
+                            <MealItem
+                                key={meal + i}
+                                id={i}
+                                value={meal}
+                                onEditSubmit={(newValue: string) => null}
+                                onDelete={(id) => null}
+                            />
+                        )}
                     </ul>
-                </div>
+                </form>
             </div >
         );
     }

@@ -1,0 +1,6 @@
+.MealItem {
+    input:not(.editing) {
+        border: 0;
+        background-color: transparent;
+    }
+}

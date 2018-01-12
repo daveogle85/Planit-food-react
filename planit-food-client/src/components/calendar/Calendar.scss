@@ -9,6 +9,19 @@
     padding: 50px;
 }
 
+.rbc-month-row {
+    z-index: 0;
+}
+
 .nav-link {
     @include nav-item;
+}
+
+.modal-buttons {
+    background-color: #fff;
+    padding: 5px;
+    display: flex;
+    margin: 0 10px;
+    justify-content: space-around;
+    border-radius: 5px;
 }
