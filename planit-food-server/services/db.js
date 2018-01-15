@@ -19,14 +19,17 @@ exports.connect = function (done) {
   state.db = mysql.createPool({
     connectionLimit: 10,
     host: url,
-    user: 'bob',
+    port: 3306,
+    user: 'root',
     password: process.env.MYSQL_PASSWORD,
-    database: 'my_db'
+    database: 'planitfood-db'
   });
 
   //test connection
   state.db.getConnection(function (err, connection) {
-    if (connection) { connection.release(); }
+    if (connection) {
+      connection.release();
+    }
     return done(err, 'connection');
   });
 };
@@ -42,16 +45,22 @@ exports.set = function (db) {
 };
 
 // done = (error, results fields)
-exports.queryDB = (query, done) => {
+exports.queryDB = (query, params) => {
   if (state.db) {
-    pool.getConnection(function (err, connection) {
-      // Use the connection
-      connection.query(query, function (error, results, fields) {
-        // And done with the connection.
-        connection.release();
-        return done(error, results, fields);
+    var done = new Promise((res, rej) => {
+      state.db.getConnection(function (err, connection) {
+        // Use the connection
+        connection.query(query, params, function (error, results, fields) {
+          // And done with the connection.
+          connection.release();
+          return error ? rej(error) : res({
+            results,
+            fields
+          });
+        });
       });
     });
+    return done;
   }
 };
 

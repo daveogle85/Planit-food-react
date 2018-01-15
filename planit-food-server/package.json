@@ -34,6 +34,7 @@
     "express-graphql": "^0.6.11",
     "express-session": "^1.14.1",
     "graphql": "^0.12.3",
+    "moment": "^2.20.1",
     "mysql": "^2.15.0",
     "selenium": "^2.20.0",
     "winston": "^2.2.0"

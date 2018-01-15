@@ -6,8 +6,8 @@ const winston = require("../services/logger");
 const wsModel = require("../models/websocketModel");
 
 const graphqlHTTP = require('express-graphql');
-const { schema } = require("../schemas/Graphql_test");
-const { root } = require("../models/graphql_testModel");
+const { schema } = require("../schemas/DayCard");
+const { root } = require("../models/DayCard");
 
 router.use("/", graphqlHTTP({
     schema,

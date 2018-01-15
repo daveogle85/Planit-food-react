@@ -1,8 +1,7 @@
 var router = require("express").Router();
 var auth = require("./auth");
-var ws = require("./websocket");
 
-var graphqlTest = require('./graphql_test');
+var dayCard = require('./dayCard');
 // var admin = require("./admin");
 //
 // router.use("/api/tracked", trackedItems);
@@ -20,5 +19,5 @@ var graphqlTest = require('./graphql_test');
 // ws.init();
 //
 
-router.use("/test", graphqlTest);
+router.use("/dayCard", dayCard);
 module.exports = router;
