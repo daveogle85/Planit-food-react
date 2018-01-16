@@ -1,7 +1,6 @@
-var { buildSchema } = require('graphql');
 
 // Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
+var dayCardSchema = `
   scalar Date
 
   type DayCard {
@@ -11,10 +10,10 @@ var schema = buildSchema(`
   }
 
   type Query {
-    dayCards(daycard_id: Int, startDate: Date, endDate: Date): [DayCard]
+    DayCards(daycard_id: Int, startDate: Date, endDate: Date): [DayCard]
   }
-`);
+`;
 
 module.exports = {
-  schema
+  dayCardSchema
 };

@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import BigCalendar from 'react-big-calendar';
 import * as moment from 'moment';
-import { SlotInfo, BigCalendarProps } from '../../Models/Calendar';
+import { SlotInfo, BigCalendarProps } from '../../models/Calendar';
 import Modal from '../common/modal/Modal';
 import DayCard from '../home/day-card/DayCard';
 
@@ -92,6 +92,7 @@ class CalendarPage extends Component<BigCalendarProps, CalendarPageState> {
     private renderModal = () => ([
         (
             <DayCard
+                date={moment(new Date())}    
                 mealList={[{ id: '1', name: 'meal1' }]}
                 key="day-card"
                 allowEditing={true}

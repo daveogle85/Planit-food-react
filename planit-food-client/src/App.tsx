@@ -4,8 +4,8 @@ import {
   Route
 } from 'react-router-dom';
 import CalendarPage from './components/calendar/Calendar';
-import { AppRoute } from './Models/Router';
-import Home from './components/home/Home';
+import { AppRoute } from './models/Router';
+import HomeContainer from './components/home/HomeContainer';
 
 import './App.css';
 
@@ -13,7 +13,7 @@ const routes: AppRoute[] = [
   {
     path: '/',
     exact: true,
-    component: Home
+    component: HomeContainer
   },
   {
     path: '/calendar',

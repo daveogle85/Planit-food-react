@@ -3,7 +3,8 @@ import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Carousel, CarouselProps } from 'react-responsive-carousel';
 import DayCard from './day-card/DayCard';
-import { CardCarouselType } from '../../Models/Carousel';
+import { CardCarouselType } from '../../models/Carousel';
+import { DayCard as DayCardModel } from '../../models/DayCard';
 
 import './Home.css';
 import '../../../node_modules/react-responsive-carousel/lib/styles/carousel.min.css';
@@ -14,16 +15,11 @@ const CardCarousel: CardCarouselType<CarouselProps> = Carousel as CardCarouselTy
  * using https://github.com/leandrowd/react-responsive-carousel
  */
 
-// Some mock days
-const days = [
-    { meals: [{id: '1', name: 'meal1'}] },
-    { meals: [{ id: '2', name: 'meal1' }] },
-    { meals: [{ id: '3', name: 'meal1' }] },
-    { meals: [{ id: '4', name: 'meal1' }, { id: '5', name: 'meal2' }] },
-    { meals: [{ id: '6', name: 'meal1' }] },
-];
+type HomeProps = {
+    days: DayCardModel[]
+};
 
-class Home extends Component {
+class Home extends Component<HomeProps> {
     public render() {
         return (
             <div className="Home">
@@ -38,10 +34,11 @@ class Home extends Component {
                     showThumbs={false}
                 >
                     {
-                        days.map((day, i) =>
+                        this.props.days && this.props.days.map((day, i) =>
                             <DayCard
-                                key={i}
-                                mealList={day.meals}
+                                key={day.daycard_id}
+                                date={day.meal_date}
+                                mealList={[{ id: '1', name: day.meal_name }]}
                             />
                         )
                     }

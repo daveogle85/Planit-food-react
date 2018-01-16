@@ -1,0 +1,22 @@
+{
+  "name": "planit-food-react",
+  "version": "1.0.0",
+  "description": "An app to manage the weekly food shop",
+  "scripts": {
+    "build": "cd ./planit-food-server && npm i && npm run build",
+    "start": "concurrently \"cd ./planit-food-client && npm start\" \"cd ./planit-food-server && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daveogle85/Planit-food-react.git"
+  },
+  "author": "Dave Ogle",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/daveogle85/Planit-food-react/issues"
+  },
+  "homepage": "https://github.com/daveogle85/Planit-food-react#readme",
+  "dependencies": {
+    "concurrently": "^3.5.1"
+  }
+}

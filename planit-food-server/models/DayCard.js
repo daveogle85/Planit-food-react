@@ -1,26 +1,24 @@
-var moment = require('moment');
-var queryDB = require('../services/db').queryDB;
+const moment = require('moment');
+const queryDB = require('../services/db').queryDB;
 const winston = require("../services/logger");
 
 const getAllDayCards = {
     sql: 'SELECT * FROM DayCard'
 };
 
-// The root provides a resolver function for each API endpoint
-const root = {
-    dayCards: (args, context, obj) => {
-        if (args.id) {
-            return mockData.filter((d) => d.id === args.id);
-        } else if (args.startDate || args.endDate) {
-            return filterByDate(args.startDate, args.endDate, mockData);
-        }
-        return queryDB(getAllDayCards, null).then((res) => {
-            return res.results.map((r) => r);
-        }).catch((err) => {
-            winston.error(err);
-        });
-    },
+const dayCards = (args, context, obj) => {
+    if (args.id) {
+        return mockData.filter((d) => d.id === args.id);
+    } else if (args.startDate || args.endDate) {
+        return filterByDate(args.startDate, args.endDate, mockData);
+    }
+    return queryDB(getAllDayCards, null).then((res) => {
+        return res.results.map((r) => r);
+    }).catch((err) => {
+        winston.error(err);
+    });
 };
+
 
 /**
  * Filter a list of meals by the start and end dates inclusive
@@ -43,6 +41,4 @@ function filterByDate(sDate, eDate, mockData) {
     });
 }
 
-module.exports = {
-    root
-};
+module.exports = dayCards;

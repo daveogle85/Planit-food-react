@@ -6,13 +6,14 @@ var session = require("express-session");
 var winston = require("./services/logger");
 var ws = require("./services/ws");
 var pages = require("./services/pages");
+var cors = require('cors')
 
 module.exports = function(port, callback, rootUrl) {
 
     winston.info("Setting up server");
 
     if (!rootUrl) {
-        rootUrl = "http://localhost:3000";
+        rootUrl = "http://localhost:3001";
         //rootUrl = "http://planitfood.net";
     }
 
@@ -34,6 +35,7 @@ module.exports = function(port, callback, rootUrl) {
             secure: false
         }
     }));
+    app.use(cors());
     app.use(require("./controllers"));
 
     // Connect to db

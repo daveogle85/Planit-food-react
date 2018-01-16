@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Component, MouseEvent } from 'react';
 import MealItem from './MealItem';
-import { Meal } from '../../../Models/DayCard';
+import { Meal } from '../../../models/DayCard';
+import { Moment } from 'moment';
 
 import './DayCard.css';
 
 interface DayCardProps {
-    date?: Date;
+    date: Moment;
     mealList: Meal[];
     allowEditing?: boolean;
 }
