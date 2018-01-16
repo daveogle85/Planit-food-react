@@ -33,7 +33,7 @@ class DayCard extends Component<DayCardProps, DayCardState> {
             <div className="day-card">
                 <div className="day-card-date">
                     <div className="day">test</div>
-                    <div className="date">test2</div>
+                    <div className="date">{this.props.date}</div>
                 </div>
                 <form className="meal-list">
                     <ul>
