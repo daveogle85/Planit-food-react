@@ -2,22 +2,23 @@ const moment = require('moment');
 const queryDB = require('../services/db').queryDB;
 const winston = require("../services/logger");
 
-const getQuery = (query) => query +
+const getQuery = (query) =>
+    'SELECT * FROM DayCard_has_Recipes' +
     ' JOIN DayCard ON DayCard_has_Recipes.DayCard_idDayCard = idDayCard' +
-    ' JOIN Recipes ON DayCard_has_Recipes.Recipes_idRecipes = idRecipes;';
+    ` JOIN Recipes ON DayCard_has_Recipes.Recipes_idRecipes = idRecipes ${query ? query : ''};`;
 
 const getAllDayCards = {
-    sql: getQuery('SELECT * FROM DayCard_has_Recipes'),
+    sql: getQuery(),
     values: null
 };
 
 const getDayCardRange = (startDate, endDate) => ({
-    sql: getQuery('SELECT * FROM DayCard_has_Recipes WHERE DATE(`date`) BETWEEN ? AND ?'),
+    sql: getQuery('WHERE DATE(`date`) BETWEEN ? AND ?'),
     values: [startDate, endDate]
 });
 
 const getDayCardById = (id) => ({
-    sql: getQuery('SELECT * FROM DayCard_has_Recipes WHERE idDayCard=?'),
+    sql: getQuery('WHERE idDayCard=?'),
     values: [id]
 });
 
@@ -85,7 +86,7 @@ function filterByDate(sDate, eDate) {
     const end = eDate ? moment(eDate).format(DATE_FORMAT) : null;
     if (start && end) {
         return queryDB(getDayCardRange(start, end)).then((res) => {
-            return res.results.map((r) => r);
+            return transformResponse(res);
         }).catch((err) => {
             winston.error(err);
         });

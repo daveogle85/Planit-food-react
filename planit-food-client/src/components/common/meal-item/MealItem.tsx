@@ -4,10 +4,11 @@ import { Component, MouseEvent } from 'react';
 import './MealItem.css';
 
 interface MealItemProps {
-    id: string;
+    id: number;
+    mealID: number | string;
     value: string;
     onEditSubmit: (newValue: string) => void;
-    onDelete: (id: string) => void;
+    onDelete: (id: number) => void;
     allowEditing: boolean;
     isEditing?: boolean;
 }

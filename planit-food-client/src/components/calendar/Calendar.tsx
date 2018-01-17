@@ -5,7 +5,7 @@ import BigCalendar from 'react-big-calendar';
 import * as moment from 'moment';
 import { SlotInfo, BigCalendarProps } from '../../models/Calendar';
 import Modal from '../common/modal/Modal';
-import DayCard from '../home/day-card/DayCard';
+import DayCard from '../common/day-card/DayCard';
 
 import '../../../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
 import './Calendar.css';
@@ -101,7 +101,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
         (
             <DayCard
                 date={moment()}
-                mealList={[{ id: '1', name: 'meal1' }]}
+                mealList={[]}
                 key="day-card"
                 allowEditing={true}
             />

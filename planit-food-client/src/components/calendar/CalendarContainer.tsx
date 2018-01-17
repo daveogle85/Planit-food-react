@@ -37,10 +37,10 @@ class CalendarContainer extends Component<CalendarContainerProps, CalendarState>
             <Calendar
                 refetch={this.refetch}
                 events={this.state.data && this.state.data.map((card) => ({
-                    title: card.meal_name,
+                    title: card.recipes && card.recipes.length && card.recipes[0].recipeName || '',
                     allDay: true,
-                    start: moment(card.meal_date),
-                    end: moment(card.meal_date),
+                    start: moment(card.date),
+                    end: moment(card.date),
                     desc: 'Something here'
                 }))}
             />

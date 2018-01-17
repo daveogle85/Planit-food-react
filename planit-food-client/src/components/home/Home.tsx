@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Carousel, CarouselProps } from 'react-responsive-carousel';
-import DayCard from './day-card/DayCard';
+import DayCard from '../common/day-card/DayCard';
 import { CardCarouselType } from '../../models/Carousel';
 import { DayCard as DayCardModel } from '../../models/DayCard';
 
@@ -36,9 +36,9 @@ class Home extends Component<HomeProps> {
                     {
                         this.props.days && this.props.days.map((day, i) =>
                             <DayCard
-                                key={day.daycard_id}
-                                date={day.meal_date}
-                                mealList={[{ id: '1', name: day.meal_name }]}
+                                key={day.idDayCard}
+                                date={day.date}
+                                mealList={day.recipes}
                             />
                         )
                     }

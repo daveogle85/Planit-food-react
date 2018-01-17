@@ -1,20 +1,21 @@
 import * as React from 'react';
 import { Component, MouseEvent } from 'react';
-import MealItem from './MealItem';
-import { Meal } from '../../../models/DayCard';
+import MealItem from '../meal-item/MealItem';
 import { Moment } from 'moment';
 import * as moment from 'moment';
+import { Recipe } from '../../../models/Recipes';
+import { MealItem as MealItemModel } from '../../../models/DayCard';
 
 import './DayCard.css';
 
 interface DayCardProps {
     date?: Moment;
-    mealList: Meal[];
+    mealList: Recipe[];
     allowEditing?: boolean;
 }
 
 interface DayCardState {
-    mealList: Meal[];
+    mealList: MealItemModel[];
 }
 
 export const dayCardWidth = 320;
@@ -29,7 +30,6 @@ class DayCard extends Component<DayCardProps, DayCardState> {
     }
 
     public render() {
-
         return (
             <div className="day-card">
                 <div className="day-card-date">
@@ -40,11 +40,12 @@ class DayCard extends Component<DayCardProps, DayCardState> {
                     <ul>
                         {this.state.mealList.map((meal, i) =>
                             <MealItem
-                                key={meal.id}
+                                key={meal.idRecipes || i}
                                 allowEditing={!!this.props.allowEditing}
                                 isEditing={meal.isPlaceholder}
-                                id={meal.id}
-                                value={meal.name}
+                                id={i}
+                                mealID={meal.idRecipes}
+                                value={meal.recipeName}
                                 onEditSubmit={(newValue: string) => null}
                                 onDelete={this.removeMeal}
                             />
@@ -70,11 +71,15 @@ class DayCard extends Component<DayCardProps, DayCardState> {
     private addAMeal = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         return this.setState({
-            mealList: this.state.mealList.concat({ id: 'new-meal', name: '', isPlaceholder: true })
+            mealList: this.state.mealList.concat({
+                idRecipes: 'new-recipe',
+                recipeName: '',
+                isPlaceholder: true
+            })
         });
     }
 
-    private removeMeal = (id: string) => {
+    private removeMeal = (id: number) => {
         // TODO Call server
         alert('meal removed');
     }
