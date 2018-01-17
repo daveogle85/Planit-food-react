@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "An app to manage the weekly food shop",
   "scripts": {
-    "build": "cd ./planit-food-server && npm i && npm run build",
-    "start": "concurrently \"cd ./planit-food-client && npm start\" \"cd ./planit-food-server && npm start\""
+    "build": "cd ./planit-food-server && npm i && npm run build && cd ../planit-food-client && npm i && npm run build",
+    "start": "concurrently \"cd ./planit-food-client && npm start\" \"cd ./planit-food-server && npm start\"",
+    "test": "cd ./planit-food-server && npm test && cd ../planit-food-client && npm test"
   },
   "repository": {
     "type": "git",

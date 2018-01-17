@@ -49,6 +49,9 @@ const dayCards = (args, context, obj) => {
  * Transform the db object to the required graphql object
  */
 function transformResponse(response) {
+    if (!response || !response.results) {
+        return null;
+    }
     const dayCards = [];
     response.results.forEach((dayCard) => {
         const foundCard = dayCards.find((c) => c.idDayCard === dayCard.idDayCard);
@@ -94,4 +97,4 @@ function filterByDate(sDate, eDate) {
     // TODO handle just start and just end
 }
 
-module.exports = dayCards;
+module.exports = { dayCards, transformResponse };

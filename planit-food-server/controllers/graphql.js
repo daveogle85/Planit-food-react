@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const winston = require("../services/logger");
 const graphqlHTTP = require('express-graphql');
-const dayCards = require("../models/DayCard");
+const dayCards = require("../models/DayCard").dayCards;
 var { buildSchema } = require('graphql');
 
 /**
