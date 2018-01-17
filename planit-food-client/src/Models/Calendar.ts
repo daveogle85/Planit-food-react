@@ -1,3 +1,5 @@
+import { Moment } from "moment";
+
 export type SlotInfo = {
     start: Date,
     end: Date,
@@ -10,15 +12,15 @@ type stringOrDate = string | Date;
 interface CalendarEvent {
     title: string;
     allDay: boolean;
-    start: Date;
-    end: Date;
+    start: Moment;
+    end: Moment;
     desc: string;
 }
 
 export interface BigCalendarProps {
     date?: stringOrDate;
     view?: string;
-    events?: Object[];
+    events?: CalendarEvent[];
     onNavigate?: Function;
     onView?: Function;
     onSelectSlot?: (slotInfo: { start: stringOrDate, end: stringOrDate, slots: Date[] | string[] }) => void;

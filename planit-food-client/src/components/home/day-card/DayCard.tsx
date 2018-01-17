@@ -3,11 +3,12 @@ import { Component, MouseEvent } from 'react';
 import MealItem from './MealItem';
 import { Meal } from '../../../models/DayCard';
 import { Moment } from 'moment';
+import * as moment from 'moment';
 
 import './DayCard.css';
 
 interface DayCardProps {
-    date: Moment;
+    date?: Moment;
     mealList: Meal[];
     allowEditing?: boolean;
 }
@@ -33,7 +34,7 @@ class DayCard extends Component<DayCardProps, DayCardState> {
             <div className="day-card">
                 <div className="day-card-date">
                     <div className="day">test</div>
-                    <div className="date">{this.props.date}</div>
+                    <div className="date">{moment(this.props.date).format('ll')}</div>
                 </div>
                 <form className="meal-list">
                     <ul>

@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
-import CalendarPage from './components/calendar/Calendar';
+import CalendarContainer from './components/calendar/CalendarContainer';
 import { AppRoute } from './models/Router';
 import HomeContainer from './components/home/HomeContainer';
 
@@ -18,7 +18,7 @@ const routes: AppRoute[] = [
   {
     path: '/calendar',
     exact: true,
-    component: CalendarPage
+    component: CalendarContainer
   }
 ];
 

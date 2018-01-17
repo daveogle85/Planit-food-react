@@ -9,20 +9,25 @@ import DayCard from '../home/day-card/DayCard';
 
 import '../../../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
 import './Calendar.css';
+import { Moment } from 'moment';
 
 BigCalendar.momentLocalizer(moment);
 
-interface CalendarPageState {
+interface CalendarState {
     currentDate: Date;
     modalOpen: boolean;
 }
 
+type CalendarProps = BigCalendarProps & {
+    refetch?: (variables: {}) => void
+};
+
 /**
  * Calendar page using https://www.npmjs.com/package/react-big-calendar
  */
-class CalendarPage extends Component<BigCalendarProps, CalendarPageState> {
+class Calendar extends Component<CalendarProps, CalendarState> {
 
-    public constructor(props: BigCalendarProps) {
+    public constructor(props: CalendarProps) {
         super(props);
         this.state = {
             currentDate: new Date(),
@@ -39,11 +44,14 @@ class CalendarPage extends Component<BigCalendarProps, CalendarPageState> {
                 <div className="big-calendar">
                     <BigCalendar
                         views={['month']}
-                        onNavigate={() => null}
-                        events={[]}
+                        onNavigate={(selectedDate: Moment) => {
+                            return this.props.refetch && this.props.refetch({
+                                startDate: moment(selectedDate).startOf('month').format(),
+                                endDate: moment(selectedDate).endOf('month').format()
+                            });
+                        }}
+                        events={this.props.events || []}
                         selectable={true}
-                        startAccessor="startDate"
-                        endAccessor="endDate"
                         onSelectSlot={this.onSelectSlot}
                     />
                 </div>
@@ -92,7 +100,7 @@ class CalendarPage extends Component<BigCalendarProps, CalendarPageState> {
     private renderModal = () => ([
         (
             <DayCard
-                date={moment(new Date())}    
+                date={moment()}
                 mealList={[{ id: '1', name: 'meal1' }]}
                 key="day-card"
                 allowEditing={true}
@@ -107,4 +115,4 @@ class CalendarPage extends Component<BigCalendarProps, CalendarPageState> {
     ])
 }
 
-export default CalendarPage;
+export default Calendar;

@@ -9,3 +9,13 @@ export const allDayCards = gql`
     }
   }
 `;
+
+export const dayCardsRange = gql`
+  query DayCardsRange($startDate: Date, $endDate: Date) {
+    DayCards(startDate: $startDate, endDate: $endDate) {
+        daycard_id 
+        meal_name
+        meal_date
+    }
+  }
+`;

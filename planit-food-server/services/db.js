@@ -45,12 +45,12 @@ exports.set = function (db) {
 };
 
 // done = (error, results fields)
-exports.queryDB = (query, params) => {
+exports.queryDB = (args) => {
   if (state.db) {
     var done = new Promise((res, rej) => {
       state.db.getConnection(function (err, connection) {
         // Use the connection
-        connection.query(query, params, function (error, results, fields) {
+        connection.query(args.sql, args.values, function (error, results, fields) {
           // And done with the connection.
           connection.release();
           return error ? rej(error) : res({
