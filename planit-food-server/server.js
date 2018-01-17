@@ -5,8 +5,7 @@ var db = require("./services/db");
 var session = require("express-session");
 var winston = require("./services/logger");
 var ws = require("./services/ws");
-var pages = require("./services/pages");
-var cors = require('cors')
+var cors = require('cors');
 
 module.exports = function(port, callback, rootUrl) {
 

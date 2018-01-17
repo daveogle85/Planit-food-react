@@ -1,19 +1,16 @@
+// Construct a day card schema, using GraphQL schema language
 
-// Construct a schema, using GraphQL schema language
-var dayCardSchema = `
-  scalar Date
-
+const dayCardSchema = `
   type DayCard {
-    daycard_id: Int!
-    meal_date: Date!
-    meal_name: String!
-  }
-
-  type Query {
-    DayCards(daycard_id: Int, startDate: Date, endDate: Date): [DayCard]
+    idDayCard: Int!
+    date: Date!
+    mealTimeCode: String
+    recipes: [Recipe]
   }
 `;
 
-module.exports = {
-  dayCardSchema
-};
+const dayCardQuery = `
+  DayCards(idDayCard: Int, startDate: Date, endDate: Date): [DayCard]
+`;
+
+module.exports = { dayCardSchema, dayCardQuery };

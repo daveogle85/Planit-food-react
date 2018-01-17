@@ -11,10 +11,17 @@ var { buildSchema } = require('graphql');
  */
 function generateSchema() {
     let schema = "";
-    const {
-        dayCardSchema
-    } = require("../schemas/DayCard");
-    return buildSchema(schema.concat(dayCardSchema));
+    let query = "type Query {";
+    const scalarTypesSchema = require('../schemas/types');
+    const recipe = require('../schemas/Recipe');
+    const dayCard = require("../schemas/DayCard");
+    query = query.concat(recipe.recipeQuery, dayCard.dayCardQuery, '}');
+    return buildSchema(schema.concat(
+        scalarTypesSchema,
+        query,
+        recipe.recipeSchema,
+        dayCard.dayCardSchema
+    ));
 }
 
 // The root provides a resolver function for each API endpoint

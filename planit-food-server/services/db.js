@@ -3,8 +3,12 @@ const mysql = require('mysql');
 require('dotenv').load();
 
 // Build the connection string
-const localDbURI = 'mongodb://localhost:27017';
-const url = process.env.DB_URI || localDbURI;
+const localDbURI = '';
+const host = process.env.DB_URI || localDbURI;
+const port = process.env.DB_PORT || 3306;
+const user = process.env.DB_USER || 'root';
+const database = process.env.DB_DATABASE_NAME || 'plainitfood-db';
+const connectionLimit = process.env.DB_CONN_LIMIT || 10;
 
 var state = {
   db: null,
@@ -14,15 +18,15 @@ exports.connect = function (done) {
   if (state.db) {
     return done();
   }
-  winston.info("connecting to " + url + '...');
-  console.log("connecting to " + url + '...');
+  winston.info("connecting to " + host + '...');
+  console.log("connecting to " + host + '...');
   state.db = mysql.createPool({
-    connectionLimit: 10,
-    host: url,
-    port: 3306,
-    user: 'root',
+    connectionLimit,
+    host,
+    port,
+    user,
     password: process.env.MYSQL_PASSWORD,
-    database: 'plainitfood-db'
+    database
   });
 
   //test connection
@@ -50,6 +54,7 @@ exports.queryDB = (args) => {
     var done = new Promise((res, rej) => {
       state.db.getConnection(function (err, connection) {
         // Use the connection
+        winston.info('Query Database: ' + args);
         connection.query(args.sql, args.values, function (error, results, fields) {
           // And done with the connection.
           connection.release();
