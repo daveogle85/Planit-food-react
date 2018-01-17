@@ -9,7 +9,9 @@ export type SlotInfo = {
 
 type stringOrDate = string | Date;
 
-interface CalendarEvent {
+export interface Event<T> extends CalendarEvent { card: T }
+
+export interface CalendarEvent {
     title: string;
     allDay: boolean;
     start: Moment;

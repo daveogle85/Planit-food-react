@@ -3,22 +3,26 @@ import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import BigCalendar from 'react-big-calendar';
 import * as moment from 'moment';
-import { SlotInfo, BigCalendarProps } from '../../models/Calendar';
+import { SlotInfo, BigCalendarProps, Event, CalendarEvent } from '../../models/Calendar';
 import Modal from '../common/modal/Modal';
 import DayCard from '../common/day-card/DayCard';
+import { DayCard as DayCardModel } from '../../models/DayCard';
+import { Moment } from 'moment';
+import { Recipe } from '../../models/Recipes';
 
 import '../../../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
 import './Calendar.css';
-import { Moment } from 'moment';
 
 BigCalendar.momentLocalizer(moment);
 
 interface CalendarState {
     currentDate: Date;
     modalOpen: boolean;
+    currentCard?: DayCardModel;
 }
 
 type CalendarProps = BigCalendarProps & {
+    events?: Array<Event<DayCardModel>>,
     refetch?: (variables: {}) => void
 };
 
@@ -91,28 +95,39 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     }
 
     private onSelectSlot = (slotInfo: SlotInfo) => {
+        const selectedEvent = this.props.events ? (this.props.events as CalendarEvent[]).find((event) =>
+            event.start.isSame(slotInfo.start, 'day')) : undefined;
         this.setState({
             currentDate: slotInfo.start,
-            modalOpen: true
+            modalOpen: true,
+            currentCard: selectedEvent && (selectedEvent as Event<DayCardModel>).card
         });
     }
 
-    private renderModal = () => ([
-        (
-            <DayCard
-                date={moment()}
-                mealList={[]}
-                key="day-card"
-                allowEditing={true}
-            />
-        ),
-        (
-            <div className="modal-buttons" key="buttons">
-                <button>Expand</button>
-                <button onClick={() => this.setState({ modalOpen: false })}>Close</button>
-            </div>
-        )
-    ])
+    private renderModal = () => {
+        let date = moment(this.state.currentDate);
+        let mealList: Recipe[] = [];
+        if (this.state.currentCard) {
+            date = this.state.currentCard.date;
+            mealList = this.state.currentCard.recipes;
+        }
+        return ([
+            (
+                <DayCard
+                    date={date}
+                    mealList={mealList}
+                    key="day-card"
+                    allowEditing={true}
+                />
+            ),
+            (
+                <div className="modal-buttons" key="buttons">
+                    <button>Expand</button>
+                    <button onClick={() => this.setState({ modalOpen: false })}>Close</button>
+                </div>
+            )
+        ]);
+    }
 }
 
 export default Calendar;
