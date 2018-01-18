@@ -33,6 +33,8 @@ exports.connect = function (done) {
   state.db.getConnection(function (err, connection) {
     if (connection) {
       connection.release();
+    } else {
+      state.db = null;
     }
     return done(err, 'connection');
   });
@@ -48,22 +50,56 @@ exports.set = function (db) {
   return;
 };
 
-// done = (error, results fields)
+/**
+ * Queries the database using transactions.
+ * @param {*} args a list of, or single query object containing an sql: statement and an 
+ * optional values list for use with prepated statements
+ */
 exports.queryDB = (args) => {
   if (state.db) {
     var done = new Promise((res, rej) => {
       state.db.getConnection(function (err, connection) {
         // Use the connection
         winston.info('Query Database: ' + args);
-        connection.query(args.sql, args.values, function (error, results, fields) {
-          // And done with the connection.
-          connection.release();
-          return error ? rej(error) : res({
-            results,
-            fields
+        if (!Array.isArray(args)) {
+          args = [args];
+        }
+        // Begin transaction
+        connection.beginTransaction((err) => {
+          if (err) {
+            return err;
+          }
+          const resultsSet = [];
+          args.forEach(queryObject => {
+
+            const query = connection.query(queryObject.sql, queryObject.values, function (error, results, fields) {
+              winston.info(query.sql);
+              console.log(query.sql);
+              if (error) {
+                winston.warn(error);
+                return connection.rollback(() => {
+                  rej(error);
+                });
+              } else resultsSet.push({
+                results,
+                fields
+              });
+            }); // end query
+
+          }); // end loop
+
+          connection.commit(function (err) {
+            if (err) {
+              return connection.rollback(function () {
+                rej(error);
+              });
+            }
+            res(resultsSet);
+            connection.release();
           });
-        });
-      });
+
+        }); // end transaction
+      }); // end connection
     });
     return done;
   }

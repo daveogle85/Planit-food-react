@@ -23,7 +23,8 @@ interface CalendarState {
 
 type CalendarProps = BigCalendarProps & {
     events?: Array<Event<DayCardModel>>,
-    refetch?: (variables: {}) => void
+    refetch?: (variables: {}) => void,
+    createRecipe?: (variables: {}) => (newRecipe: Recipe, dayCardId: number) => Promise<DayCardModel>
 };
 
 /**
@@ -114,20 +115,28 @@ class Calendar extends Component<CalendarProps, CalendarState> {
         return ([
             (
                 <DayCard
+                    id={this.state.currentCard && this.state.currentCard.idDayCard || -1}
                     date={date}
                     mealList={mealList}
                     key="day-card"
                     allowEditing={true}
+                    createMeal={this.props.createRecipe && this.props.createRecipe({
+                        startDate: moment(this.state.currentDate).startOf('month').format(),
+                        endDate: moment(this.state.currentDate).endOf('month').format()
+                    })}
                 />
             ),
             (
                 <div className="modal-buttons" key="buttons">
                     <button>Expand</button>
-                    <button onClick={() => this.setState({ modalOpen: false })}>Close</button>
+                    <button onClick={this.closeModal}>Cancel</button>
+                    <button onClick={this.closeModal}>Confirm</button>
                 </div>
             )
         ]);
     }
+
+    private closeModal = () => this.setState({ modalOpen: false });
 }
 
 export default Calendar;

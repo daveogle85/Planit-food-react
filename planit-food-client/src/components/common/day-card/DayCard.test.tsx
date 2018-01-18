@@ -4,5 +4,5 @@ import DayCard from './DayCard';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<DayCard mealList={[]} />, div);
+    ReactDOM.render(<DayCard id={1} mealList={[]} />, div);
 });

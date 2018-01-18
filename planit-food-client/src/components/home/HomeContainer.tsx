@@ -6,14 +6,14 @@ import { allDayCards } from '../../api/dayCard';
 import { DayCard } from '../../models/DayCard';
 import { ApiProps, ApiState } from '../../models/Api';
 
-type HomeContainerProps = ApiProps<{ DayCards: DayCard[] }, DayCard>;
+type HomeContainerProps = ApiProps<{ getDayCards: DayCard[] }, DayCard, DayCard>;
 
 class HomeContainer extends Component<HomeContainerProps, ApiState<DayCard>> {
 
     public constructor(props: HomeContainerProps) {
         super(props);
         this.state = {
-            data: props.data.DayCards,
+            data: props.data.getDayCards,
             error: props.data.error,
             loading: props.data.loading
         };
@@ -21,7 +21,7 @@ class HomeContainer extends Component<HomeContainerProps, ApiState<DayCard>> {
 
     public componentWillReceiveProps(nextProps: HomeContainerProps) {
         this.setState({
-            data: nextProps.data.DayCards,
+            data: nextProps.data.getDayCards,
             error: nextProps.data.error,
             loading: nextProps.data.loading
         });

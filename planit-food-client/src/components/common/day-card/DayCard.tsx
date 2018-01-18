@@ -4,14 +4,16 @@ import MealItem from '../meal-item/MealItem';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 import { Recipe } from '../../../models/Recipes';
-import { MealItem as MealItemModel } from '../../../models/DayCard';
+import { MealItem as MealItemModel, DayCard as DayCardModel } from '../../../models/DayCard';
 
 import './DayCard.css';
 
 interface DayCardProps {
+    id: number;
     date?: Moment;
     mealList: Recipe[];
     allowEditing?: boolean;
+    createMeal?: (meal: Recipe, id: number) => Promise<DayCardModel>;
 }
 
 interface DayCardState {
@@ -40,13 +42,13 @@ class DayCard extends Component<DayCardProps, DayCardState> {
                     <ul>
                         {this.state.mealList.map((meal, i) =>
                             <MealItem
-                                key={meal.idRecipes || i}
+                                key={meal.idRecipes + i.toString()}
                                 allowEditing={!!this.props.allowEditing}
                                 isEditing={meal.isPlaceholder}
                                 id={i}
                                 mealID={meal.idRecipes}
                                 value={meal.recipeName}
-                                onEditSubmit={(newValue: string) => null}
+                                onEditSubmit={this.onEditSubmit}
                                 onDelete={this.removeMeal}
                             />
                         )}
@@ -55,6 +57,17 @@ class DayCard extends Component<DayCardProps, DayCardState> {
                 </form>
             </div >
         );
+    }
+
+    private onEditSubmit = (newValue: string, mealID?: number) => mealID ?
+        () => null : this.createMeal(newValue, this.props.id)
+
+    private createMeal = (value: string, id: number) => {
+        return this.props.createMeal && this.props.createMeal(
+            {
+                recipeName: value
+            },
+            id);
     }
 
     private renderAddNewCardButton() {
@@ -72,7 +85,6 @@ class DayCard extends Component<DayCardProps, DayCardState> {
         e.preventDefault();
         return this.setState({
             mealList: this.state.mealList.concat({
-                idRecipes: 'new-recipe',
                 recipeName: '',
                 isPlaceholder: true
             })
@@ -80,8 +92,9 @@ class DayCard extends Component<DayCardProps, DayCardState> {
     }
 
     private removeMeal = (id: number) => {
-        // TODO Call server
-        alert('meal removed');
+        this.setState({
+            mealList: this.state.mealList.filter((meal, i) => id !== i)
+        });
     }
 }
 

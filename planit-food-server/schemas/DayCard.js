@@ -10,7 +10,11 @@ const dayCardSchema = `
 `;
 
 const dayCardQuery = `
-  DayCards(idDayCard: Int, startDate: Date, endDate: Date): [DayCard]
+  getDayCards(idDayCard: Int, startDate: Date, endDate: Date): [DayCard]
 `;
 
-module.exports = { dayCardSchema, dayCardQuery };
+const dayCardMutators = `
+  addRecipeToCard(newRecipe: RecipeInput!, idDayCard: Int!): DayCard
+`;
+
+module.exports = { dayCardSchema, dayCardQuery, dayCardMutators };

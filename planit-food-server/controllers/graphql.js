@@ -3,30 +3,63 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const winston = require("../services/logger");
 const graphqlHTTP = require('express-graphql');
-const dayCards = require("../models/DayCard").dayCards;
-var { buildSchema } = require('graphql');
+const {
+    buildSchema
+} = require('graphql');
+const dayCardModel = require("../models/DayCard");
+const recipesModel = require('../models/Recipe');
+const recipeSchema = require('../schemas/Recipe');
+const dayCardSchema = require("../schemas/DayCard");
+const scalarTypesSchema = require('../schemas/Types');
+
+
+function getInputs() {
+    let inputs = "";
+    return inputs.concat(recipeSchema.recipeInput);
+}
+
+function getTypes() {
+    let types = "";
+    return types.concat(
+        dayCardSchema.dayCardSchema,
+        recipeSchema.recipeSchema);
+}
+
+function getQueries() {
+    let queries = "type Query {";
+    return queries.concat(
+        dayCardSchema.dayCardQuery,
+        recipeSchema.recipeQuery,
+    '}');
+}
+
+function getMutators() {
+    let mutators = "type Mutation {";
+    return mutators.concat(
+        dayCardSchema.dayCardMutators,
+        recipeSchema.recipeMutators,
+    '}');
+}
 
 /**
  * Concat all the schemas into a single schema.
  */
 function generateSchema() {
     let schema = "";
-    let query = "type Query {";
-    const scalarTypesSchema = require('../schemas/types');
-    const recipe = require('../schemas/Recipe');
-    const dayCard = require("../schemas/DayCard");
-    query = query.concat(recipe.recipeQuery, dayCard.dayCardQuery, '}');
     return buildSchema(schema.concat(
         scalarTypesSchema,
-        query,
-        recipe.recipeSchema,
-        dayCard.dayCardSchema
+        getInputs(),
+        getTypes(),
+        getQueries(),
+        getMutators()
     ));
 }
 
 // The root provides a resolver function for each API endpoint
 const root = {
-    DayCards: dayCards
+    getDayCards: dayCardModel.getDayCards,
+    addRecipeToCard: dayCardModel.addRecipeToCard,
+    createRecipe: recipesModel.createRecipe
 };
 
 router.use("/", graphqlHTTP({

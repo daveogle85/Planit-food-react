@@ -1,6 +1,7 @@
 const moment = require('moment');
 const queryDB = require('../services/db').queryDB;
 const winston = require("../services/logger");
+const addRecipe = require('./Recipe').addRecipe;
 
 const getQuery = (query) =>
     'SELECT * FROM DayCard_has_Recipes' +
@@ -22,16 +23,21 @@ const getDayCardById = (id) => ({
     values: [id]
 });
 
+const mapRecipeToCard = (cardID) => ({
+    sql: `INSERT INTO DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(?, LAST_INSERT_ID());`,
+    values: [cardID]
+});
+
 /**
  * Day card graphql reducer
  * @param {*} args 
  * @param {*} context 
  * @param {*} obj 
  */
-const dayCards = (args, context, obj) => {
+const getDayCards = (args, context, obj) => {
     if (args.idDayCard) {
         return queryDB(getDayCardById(args.idDayCard)).then((res) => {
-            return transformResponse(res);
+            return transformResponse(res[0]);
         }).catch((err) => {
             winston.error(err);
         });
@@ -39,10 +45,22 @@ const dayCards = (args, context, obj) => {
         return filterByDate(args.startDate, args.endDate);
     }
     return queryDB(getAllDayCards).then((res) => {
-        return transformResponse(res);
-    }).catch((err) => {
-        winston.error(err);
-    });
+        return transformResponse(res[0]);
+    }).catch((err) => winston.error(err));
+};
+
+const addRecipeToCard = (args, context, obj) => {
+    if (args.newRecipe && args.idDayCard) {
+        return queryDB([
+            addRecipe(args.newRecipe.recipeName, args.newRecipe.url),
+            mapRecipeToCard(args.idDayCard),
+            getDayCardById(args.idDayCard)
+        ]).then((res) => {
+            if (res.length === 3) {
+                return transformResponse(res[2])[0];
+            }
+        }).catch((err) => winston.error(err));
+    }
 };
 
 /**
@@ -89,7 +107,7 @@ function filterByDate(sDate, eDate) {
     const end = eDate ? moment(eDate).format(DATE_FORMAT) : null;
     if (start && end) {
         return queryDB(getDayCardRange(start, end)).then((res) => {
-            return transformResponse(res);
+            return transformResponse(res[0]);
         }).catch((err) => {
             winston.error(err);
         });
@@ -97,4 +115,8 @@ function filterByDate(sDate, eDate) {
     // TODO handle just start and just end
 }
 
-module.exports = { dayCards, transformResponse };
+module.exports = {
+    getDayCards,
+    addRecipeToCard,
+    transformResponse
+};

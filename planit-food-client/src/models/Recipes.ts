@@ -1,5 +1,5 @@
 export type Recipe = {
-    idRecipes: number | string,
+    idRecipes?: number,
     recipeName: string,
     url?: string
 }

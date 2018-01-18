@@ -8,8 +8,24 @@ const recipeSchema = `
   }
 `;
 
-const recipeQuery = `
-  Recipes(idRecipes: Int, nameContains: String): [Recipe]
+const recipeInput = `
+  input RecipeInput {
+    recipeName: String!
+    url: String
+  }
 `;
 
-module.exports = { recipeSchema, recipeQuery };
+const recipeQuery = `
+  getRecipes(idRecipes: Int, nameContains: String): [Recipe]
+`;
+
+const recipeMutators = `
+  createRecipe(newRecipe: RecipeInput!): [Recipe]
+`;
+
+module.exports = {
+  recipeInput,
+  recipeSchema,
+  recipeQuery,
+  recipeMutators
+};

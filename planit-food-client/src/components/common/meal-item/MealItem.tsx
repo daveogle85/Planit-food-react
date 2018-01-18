@@ -5,9 +5,9 @@ import './MealItem.css';
 
 interface MealItemProps {
     id: number;
-    mealID: number | string;
+    mealID?: number;
     value: string;
-    onEditSubmit: (newValue: string) => void;
+    onEditSubmit: (newValue: string, mealID?: number) => void;
     onDelete: (id: number) => void;
     allowEditing: boolean;
     isEditing?: boolean;
@@ -64,7 +64,7 @@ class MealItem extends Component<MealItemProps, MealItemState> {
         e.preventDefault();
         if (this.state.isEditing) {
             this.setState({ isEditing: false });
-            return this.props.onEditSubmit(this.state.value);
+            return this.props.onEditSubmit(this.state.value, this.props.mealID);
         }
         this.setState({ isEditing: true });
     }

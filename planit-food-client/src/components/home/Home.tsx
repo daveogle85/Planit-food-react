@@ -35,8 +35,9 @@ class Home extends Component<HomeProps> {
                 >
                     {
                         this.props.days && this.props.days.map((day, i) =>
-                            <DayCard
+                            <DayCard    
                                 key={day.idDayCard}
+                                id={day.idDayCard}
                                 date={day.date}
                                 mealList={day.recipes}
                             />

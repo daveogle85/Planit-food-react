@@ -8,7 +8,7 @@ it('renders without crashing', () => {
         <MealItem
             allowEditing={false}
             id={1}
-            mealID={'1'}
+            mealID={1}
             value=""
             onEditSubmit={(v: string) => null}
             onDelete={(id) => null}
