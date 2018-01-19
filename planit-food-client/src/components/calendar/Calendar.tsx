@@ -25,7 +25,7 @@ type CalendarProps = BigCalendarProps & {
     events?: Array<Event<DayCardModel>>,
     refetch?: (variables: {}) => void,
     createRecipe?: (variables: {}) => (newRecipe: Recipe, dayCardId: number) => Promise<DayCardModel>
-    removeRecipe?: (variables: {}) => (recipe: number, id: number) => Promise<Boolean>
+    removeRecipe?: (variables: {}) => (recipe: number, id: number) => Promise<boolean>
 };
 
 /**

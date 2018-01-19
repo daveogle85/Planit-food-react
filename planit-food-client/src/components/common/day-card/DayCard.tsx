@@ -14,7 +14,7 @@ interface DayCardProps {
     mealList: Recipe[];
     allowEditing?: boolean;
     createMeal?: (meal: Recipe, id: number) => Promise<DayCardModel>;
-    removeMeal?: (recipeID: number, id: number) => Promise<Boolean>;
+    removeMeal?: (recipeID: number, id: number) => Promise<boolean>;
 }
 
 interface DayCardState {
@@ -92,13 +92,16 @@ class DayCard extends Component<DayCardProps, DayCardState> {
         });
     }
 
-    private removeMeal = (id: number, recipeID?: number) => {
+    private removeMeal = async (id: number, recipeID?: number) => {
+        let removed = true;
         if (recipeID && this.props.removeMeal) {
-             this.props.removeMeal(recipeID, this.props.id);
+            removed = await this.props.removeMeal(recipeID, this.props.id);
         }
-        this.setState({
-            mealList: this.state.mealList.filter((meal, i) => id !== i)
-        });
+        if (removed) {
+            this.setState({
+                mealList: this.state.mealList.filter((meal, i) => id !== i)
+            });
+        }    
     }
 }
 

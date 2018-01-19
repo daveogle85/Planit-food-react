@@ -1,4 +1,4 @@
-const winston = require("./logger");
+const winston = require('./logger');
 const mysql = require('mysql');
 require('dotenv').load();
 
@@ -18,8 +18,8 @@ exports.connect = function (done) {
   if (state.db) {
     return done();
   }
-  winston.info("connecting to " + host + '...');
-  console.log("connecting to " + host + '...');
+  winston.info('connecting to ' + host + '...');
+  console.log('connecting to ' + host + '...');
   state.db = mysql.createPool({
     connectionLimit,
     host,
@@ -45,9 +45,37 @@ exports.get = function () {
 };
 
 exports.set = function (db) {
-  winston.info("setting database instance");
+  winston.info('setting database instance');
   state.db = db;
   return;
+};
+
+function query(connection, queryObject) {
+  const done = new Promise((res, err) => {
+    const query = connection.query(queryObject.sql, queryObject.values, function (error, results, fields) {
+      winston.info(query.sql);
+      console.log(query.sql);
+      if (error) {
+        winston.warn(error);
+        return connection.rollback(() => {
+          err (error);
+        });
+      }
+      res({
+        results,
+        fields
+      });
+    }); // end query
+  });
+  return done;
+}
+
+const getConnection = () => {
+  return new Promise((res) => {
+    state.db.getConnection(function async(err, connection) {
+      connection.beginTransaction((err) => res({ connection, err }));
+    });
+  });
 };
 
 /**
@@ -55,60 +83,45 @@ exports.set = function (db) {
  * @param {*} args a list of, or single query object containing an sql: statement and an 
  * optional values list for use with prepated statements
  */
-exports.queryDB = (args) => {
+exports.queryDB = async (args) => {
+  // console.log('args: ', args);
   if (state.db) {
-    var done = new Promise((res, rej) => {
-      state.db.getConnection(function (err, connection) {
-        // Use the connection
-        winston.info('Query Database: ' + args);
-        if (!Array.isArray(args)) {
-          args = [args];
-        }
-        // Begin transaction
-        connection.beginTransaction((err) => {
-          if (err) {
-            return err;
-          }
-          const resultsSet = [];
-          args.forEach(queryObject => {
+    // Begin transaction
+    const { connection, err } = await getConnection();
+      // Use the connection
+    winston.info('Query Database: ' + args);
+    if (!Array.isArray(args)) {
+      args = [args];
+    }
+    if (err) {
+      return err;
+    }
+    const queries = args.map(queryObject => query(connection, queryObject));
+    const resultsSet = await Promise.all(queries);
 
-            const query = connection.query(queryObject.sql, queryObject.values, function (error, results, fields) {
-              winston.info(query.sql);
-              console.log(query.sql);
-              if (error) {
-                winston.warn(error);
-                return connection.rollback(() => {
-                  rej(error);
-                });
-              } else resultsSet.push({
-                results,
-                fields
-              });
-            }); // end query
-
-          }); // end loop
-
-          connection.commit(function (err) {
-            if (err) {
-              return connection.rollback(function () {
-                rej(error);
-              });
-            }
-            res(resultsSet);
-            connection.release();
-          });
-
-        }); // end transaction
-      }); // end connection
+    connection.commit(function (err) {
+      if (err) {
+        return connection.rollback(function () {
+          throw (err);
+        });
+      }
+      connection.release();
     });
-    return done;
+    return resultsSet;
   }
+  winston.error('No database connection!');
+  return null;
+};
+
+exports.dbError = function (err, returnValue) {
+  winston.error(err);
+  return returnValue;
 };
 
 exports.close = function (done) {
   if (state.db) {
-    winston.info("closing database instance");
-    state.db.close(function (err, result) {
+    winston.info('closing database instance');
+    state.db.close(function (err) {
       state.db = null;
       state.mode = null;
       done(err);

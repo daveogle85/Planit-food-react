@@ -59,7 +59,7 @@ export type queryVariables = { startDate: Moment, endDate: Moment };
 
 type ApolloActions = {
     addRecipeToCard: DayCard,
-    removeRecipeFromCard: Boolean
+    removeRecipeFromCard: boolean
 }
 
 export type CalendarContainerProps = ApiProps<

@@ -1,7 +1,9 @@
 const moment = require('moment');
 const queryDB = require('../services/db').queryDB;
-const winston = require("../services/logger");
+const dbError = require('../services/db').dbError;
+// const winston = require('../services/logger');
 const recipeQuery = require('./Recipe');
+const to = require('../utils/to').to;
 
 /***************************************************/
 /*                       SQL                       */
@@ -28,12 +30,12 @@ const getDayCardById = (id) => ({
 });
 
 const mapRecipeToCard = (cardID) => ({
-    sql: `INSERT INTO DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(?, LAST_INSERT_ID());`,
+    sql: 'INSERT INTO DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(?, LAST_INSERT_ID());',
     values: [cardID]
 });
 
 const removeMappingFromCard = (cardID, recipeID) => ({
-    sql: `DELETE FROM DayCard_has_Recipes WHERE DayCard_idDayCard=? AND Recipes_idRecipes=?;`,
+    sql: 'DELETE FROM DayCard_has_Recipes WHERE DayCard_idDayCard=? AND Recipes_idRecipes=?;',
     values: [cardID, recipeID]
 });
 
@@ -41,46 +43,32 @@ const removeMappingFromCard = (cardID, recipeID) => ({
 /*                     Reducers                    */
 /***************************************************/
 
-const getDayCards = (args, context, obj) => {
+const getDayCards = async(args) => {
     if (args.idDayCard) {
-        return queryDB(getDayCardById(args.idDayCard)).then((res) => {
-            return transformResponse(res[0]);
-        }).catch((err) => {
-            winston.error(err);
-        });
+        const [err, results] = await to(queryDB(getDayCardById(args.idDayCard)));
+        return err ? dbError(err, null) : transformResponse(results[0]);
     } else if (args.startDate || args.endDate) {
         return filterByDate(args.startDate, args.endDate);
     }
-    return queryDB(getAllDayCards).then((res) => {
-        return transformResponse(res[0]);
-    }).catch((err) => winston.error(err));
+    const [err, results] = await to(queryDB(getAllDayCards));
+    return err ? dbError(err, null) : transformResponse(results[0]);
 };
 
-const addRecipeToCard = (args, context, obj) => {
+const addRecipeToCard = async(args) => {
     if (args.newRecipe && args.idDayCard) {
-        return queryDB([
+        const [err, results] = await to(queryDB([
             recipeQuery.addRecipe(args.newRecipe.recipeName, args.newRecipe.url),
             mapRecipeToCard(args.idDayCard),
             getDayCardById(args.idDayCard)
-        ]).then((res) => {
-            if (res.length === 3) {
-                return transformResponse(res[2])[0];
-            }
-        }).catch((err) => winston.error(err));
+        ]));
+        return err ? dbError(err, null) : transformResponse(results[2])[0];
     }
 };
 
-const removeRecipeFromCard = (args, context, obj) => {
+const removeRecipeFromCard = async(args) => {
     if (args.idRecipe && args.idDayCard) {
-        return queryDB(removeMappingFromCard(args.idDayCard, args.idRecipe))
-            .then(() => ({
-                result: true
-            })).catch((err) => {
-                winston.error(err);
-                return {
-                    result: false
-                };
-            });
+        const [err, ] = await to(queryDB(removeMappingFromCard(args.idDayCard, args.idRecipe)));
+        return err ? dbError(err, false) : true;
     }
 };
 
@@ -122,16 +110,13 @@ function transformResponse(response) {
  * @param {*} eDate 
  * @param {*} mockData 
  */
-function filterByDate(sDate, eDate) {
+async function filterByDate(sDate, eDate) {
     const DATE_FORMAT = 'YYYY-MM-DD';
     const start = sDate ? moment(sDate).format(DATE_FORMAT) : null;
     const end = eDate ? moment(eDate).format(DATE_FORMAT) : null;
     if (start && end) {
-        return queryDB(getDayCardRange(start, end)).then((res) => {
-            return transformResponse(res[0]);
-        }).catch((err) => {
-            winston.error(err);
-        });
+        const [err, result] = await to(queryDB(getDayCardRange(start, end)));
+        return err ? dbError(err, null) : transformResponse(result[0]);
     }
     // TODO handle just start and just end
 }
