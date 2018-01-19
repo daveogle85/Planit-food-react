@@ -59,6 +59,7 @@ function generateSchema() {
 const root = {
     getDayCards: dayCardModel.getDayCards,
     addRecipeToCard: dayCardModel.addRecipeToCard,
+    removeRecipeFromCard: dayCardModel.removeRecipeFromCard,
     createRecipe: recipesModel.createRecipe
 };
 

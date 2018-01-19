@@ -1,4 +1,7 @@
 import { Moment } from "moment";
+import { ApiProps } from './Api';
+import { DayCard } from "./DayCard";
+import { AddRecipeMutatorProps, RemoveRecipeMutatorProps } from './Recipes';
 
 export type SlotInfo = {
     start: Date,
@@ -51,3 +54,22 @@ export interface BigCalendarProps {
     className?: string;
     elementProps?: React.HTMLAttributes<HTMLElement>;
 }
+
+export type queryVariables = { startDate: Moment, endDate: Moment };
+
+type ApolloActions = {
+    addRecipeToCard: DayCard,
+    removeRecipeFromCard: Boolean
+}
+
+export type CalendarContainerProps = ApiProps<
+    { getDayCards: DayCard[] },
+    queryVariables,
+    ApolloActions> & {
+        addRecipeToCardWithData: (props: AddRecipeMutatorProps) => {
+            data: ApolloActions
+        },
+        removeRecipeFromCardWithData: (props: RemoveRecipeMutatorProps) => {
+            data: ApolloActions
+        }
+    };

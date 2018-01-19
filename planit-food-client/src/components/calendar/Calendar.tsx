@@ -25,6 +25,7 @@ type CalendarProps = BigCalendarProps & {
     events?: Array<Event<DayCardModel>>,
     refetch?: (variables: {}) => void,
     createRecipe?: (variables: {}) => (newRecipe: Recipe, dayCardId: number) => Promise<DayCardModel>
+    removeRecipe?: (variables: {}) => (recipe: number, id: number) => Promise<Boolean>
 };
 
 /**
@@ -121,6 +122,10 @@ class Calendar extends Component<CalendarProps, CalendarState> {
                     key="day-card"
                     allowEditing={true}
                     createMeal={this.props.createRecipe && this.props.createRecipe({
+                        startDate: moment(this.state.currentDate).startOf('month').format(),
+                        endDate: moment(this.state.currentDate).endOf('month').format()
+                    })}
+                    removeMeal={this.props.removeRecipe && this.props.removeRecipe({
                         startDate: moment(this.state.currentDate).startOf('month').format(),
                         endDate: moment(this.state.currentDate).endOf('month').format()
                     })}

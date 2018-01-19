@@ -3,17 +3,13 @@ import { Component } from 'react';
 import Calendar from './Calendar';
 import { graphql, compose } from 'react-apollo';
 import { DayCard } from '../../models/DayCard';
-import { ApiProps, ApiState } from '../../models/Api';
+import { ApiState } from '../../models/Api';
 import * as moment from 'moment';
 import { Moment } from 'moment';
-import { dayCardsRange, addRecipe } from '../../api/dayCard';
-import { Recipe } from '../../models/Recipes';
+import { dayCardsRange, addRecipe, removeRecipe } from '../../api/dayCard';
+import { Recipe, AddRecipeMutatorProps, RemoveRecipeMutatorProps } from '../../models/Recipes';
+import { CalendarContainerProps, queryVariables } from '../../models/Calendar';
 
-type queryVariables = { startDate: Moment, endDate: Moment };
-type CalendarContainerProps = ApiProps<
-    { getDayCards: DayCard[] },
-    queryVariables,
-    { addRecipeToCard: DayCard }>;
 type CalendarState = ApiState<DayCard> & { date: Moment };
 
 class CalendarContainer extends Component<CalendarContainerProps, CalendarState> {
@@ -49,19 +45,27 @@ class CalendarContainer extends Component<CalendarContainerProps, CalendarState>
                     desc: ''
                 }))}
                 createRecipe={this.createRecipe}
+                removeRecipe={this.removeRecipe}
             />
         );
     }
 
-    private createRecipe = (variables: queryVariables) => async (recipe: Recipe, id: number) => {
-        const result = await this.props.mutate({
-            variables: {
-                newRecipe: recipe,
-                idDayCard: id
-            }
+    private createRecipe = (refetchVariables: queryVariables) => async (recipe: Recipe, id: number) => {
+        const result = await this.props.addRecipeToCardWithData({
+            newRecipe: recipe,
+            idDayCard: id
         });
-        this.refetch(variables);
+        this.refetch(refetchVariables);
         return result.data.addRecipeToCard;
+    }
+
+    private removeRecipe = (refetchVariables: queryVariables) => async (recipeID: number, cardId: number) => {
+        const result = await this.props.removeRecipeFromCardWithData({
+            idRecipe: recipeID,
+            idDayCard: cardId
+        });
+        if (result.data.removeRecipeFromCard) { this.refetch(refetchVariables); }
+        return result.data.removeRecipeFromCard;
     }
 
     private refetch = (variables: queryVariables) => {
@@ -73,8 +77,23 @@ class CalendarContainer extends Component<CalendarContainerProps, CalendarState>
     }
 }
 
+const addRecipeMutator = graphql(addRecipe, {
+    props: ({ mutate }) => ({
+        addRecipeToCardWithData: (recipe: AddRecipeMutatorProps) =>
+            mutate && mutate({ variables: recipe })
+    })
+});
+
+const removeRecipeMutator = graphql(removeRecipe, {
+    props: ({ mutate }) => ({
+        removeRecipeFromCardWithData: (removeRecipeProps: RemoveRecipeMutatorProps) =>
+            mutate && mutate({ variables: removeRecipeProps })
+    })
+});
+
 export default compose(
-    graphql(addRecipe),
+    addRecipeMutator,
+    removeRecipeMutator,
     graphql(dayCardsRange, {
         options: {
             variables: {

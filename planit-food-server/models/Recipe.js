@@ -6,6 +6,11 @@ const addRecipe = (recipeName, url) => ({
     values: [recipeName, url]
 });
 
+const deleteRecipe = (recipeID) => ({
+    sql: 'DELETE FROM Recipes WHERE idRecipes=?;',
+    values: [recipeID]
+});
+
 /**
  * Recipe graphql reducer
  * @param {*} args 
@@ -23,5 +28,6 @@ const createRecipe = (args, context, obj) => {
 
 module.exports = {
     createRecipe,
-    addRecipe
+    addRecipe,
+    deleteRecipe
 };

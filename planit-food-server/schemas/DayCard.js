@@ -15,6 +15,7 @@ const dayCardQuery = `
 
 const dayCardMutators = `
   addRecipeToCard(newRecipe: RecipeInput!, idDayCard: Int!): DayCard
+  removeRecipeFromCard(idRecipe: Int!, idDayCard: Int!): Boolean
 `;
 
 module.exports = { dayCardSchema, dayCardQuery, dayCardMutators };

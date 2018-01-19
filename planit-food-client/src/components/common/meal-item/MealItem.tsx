@@ -8,7 +8,7 @@ interface MealItemProps {
     mealID?: number;
     value: string;
     onEditSubmit: (newValue: string, mealID?: number) => void;
-    onDelete: (id: number) => void;
+    onDelete: (id: number, recipeID?: number) => void;
     allowEditing: boolean;
     isEditing?: boolean;
 }
@@ -71,7 +71,7 @@ class MealItem extends Component<MealItemProps, MealItemState> {
 
     private onDeleteClicked = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        return this.props.onDelete(this.props.id);
+        return this.props.onDelete(this.props.id, this.props.mealID);
     }
 }
 

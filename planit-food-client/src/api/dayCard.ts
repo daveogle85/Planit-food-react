@@ -41,3 +41,9 @@ export const addRecipe = gql`
         }
     }
 `;
+
+export const removeRecipe = gql`
+    mutation RemoveRecipeFromCard($idRecipe: Int!, $idDayCard: Int!) {
+        removeRecipeFromCard(idRecipe: $idRecipe, idDayCard: $idDayCard)
+    }
+`;

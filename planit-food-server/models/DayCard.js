@@ -1,7 +1,11 @@
 const moment = require('moment');
 const queryDB = require('../services/db').queryDB;
 const winston = require("../services/logger");
-const addRecipe = require('./Recipe').addRecipe;
+const recipeQuery = require('./Recipe');
+
+/***************************************************/
+/*                       SQL                       */
+/***************************************************/
 
 const getQuery = (query) =>
     'SELECT * FROM DayCard_has_Recipes' +
@@ -28,12 +32,15 @@ const mapRecipeToCard = (cardID) => ({
     values: [cardID]
 });
 
-/**
- * Day card graphql reducer
- * @param {*} args 
- * @param {*} context 
- * @param {*} obj 
- */
+const removeMappingFromCard = (cardID, recipeID) => ({
+    sql: `DELETE FROM DayCard_has_Recipes WHERE DayCard_idDayCard=? AND Recipes_idRecipes=?;`,
+    values: [cardID, recipeID]
+});
+
+/***************************************************/
+/*                     Reducers                    */
+/***************************************************/
+
 const getDayCards = (args, context, obj) => {
     if (args.idDayCard) {
         return queryDB(getDayCardById(args.idDayCard)).then((res) => {
@@ -52,7 +59,7 @@ const getDayCards = (args, context, obj) => {
 const addRecipeToCard = (args, context, obj) => {
     if (args.newRecipe && args.idDayCard) {
         return queryDB([
-            addRecipe(args.newRecipe.recipeName, args.newRecipe.url),
+            recipeQuery.addRecipe(args.newRecipe.recipeName, args.newRecipe.url),
             mapRecipeToCard(args.idDayCard),
             getDayCardById(args.idDayCard)
         ]).then((res) => {
@@ -60,6 +67,20 @@ const addRecipeToCard = (args, context, obj) => {
                 return transformResponse(res[2])[0];
             }
         }).catch((err) => winston.error(err));
+    }
+};
+
+const removeRecipeFromCard = (args, context, obj) => {
+    if (args.idRecipe && args.idDayCard) {
+        return queryDB(removeMappingFromCard(args.idDayCard, args.idRecipe))
+            .then(() => ({
+                result: true
+            })).catch((err) => {
+                winston.error(err);
+                return {
+                    result: false
+                };
+            });
     }
 };
 
@@ -118,5 +139,6 @@ function filterByDate(sDate, eDate) {
 module.exports = {
     getDayCards,
     addRecipeToCard,
+    removeRecipeFromCard,
     transformResponse
 };
