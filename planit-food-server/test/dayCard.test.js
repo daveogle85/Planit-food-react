@@ -1,5 +1,5 @@
-var assert = require('assert');
-var transformResponse = require('../models/DayCard').transformResponse;
+const assert = require('assert');
+const transformResponse = require('../models/DayCard').transformResponse;
 
 describe('DayCard', function () {
 

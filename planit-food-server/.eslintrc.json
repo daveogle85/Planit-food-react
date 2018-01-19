@@ -2,14 +2,19 @@
     "env": {
         "browser": true,
         "es6": true,
-        "node": true
+        "node": true,
+        "mocha": true
     },
+    "plugins": [
+        "mocha"
+    ],
     "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaVersion": 2017,
         "sourceType": "module"
     },
     "rules": {
+        "mocha/no-exclusive-tests": "error",
         "linebreak-style": [
             "error",
             "windows"
