@@ -1,9 +1,12 @@
 const moment = require('moment');
 const queryDB = require('../services/db').queryDB;
 const dbError = require('../services/db').dbError;
-// const winston = require('../services/logger');
+const winston = require('../services/logger');
 const recipeQuery = require('./Recipe');
 const to = require('../utils/to').to;
+const getConnection = require('../services/db').getConnection;
+const query = require('../services/db').query;
+const endTransaction = require('../services/db').endTransaction;
 
 /***************************************************/
 /*                       SQL                       */
@@ -19,20 +22,32 @@ const getAllDayCards = {
     values: null
 };
 
+const addNewDayCard = (date) => {
+    return ({
+        sql: 'INSERT INTO DayCard(date) Values(?);',
+        values: [date]
+    });
+};
+
 const getDayCardRange = (startDate, endDate) => ({
     sql: getQuery('WHERE DATE(`date`) BETWEEN ? AND ?'),
     values: [startDate, endDate]
 });
 
 const getDayCardById = (id) => ({
-    sql: getQuery('WHERE idDayCard=?'),
+    sql: getQuery('WHERE idDayCard=?;'),
     values: [id]
 });
 
-const mapRecipeToCard = (cardID) => ({
+const mapRecipeToCardWithCardID = (cardID) => ({
     sql: 'INSERT INTO DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(?, LAST_INSERT_ID());',
     values: [cardID]
 });
+
+const getLastUpdatedCard = {
+    sql: 'SELECT idDayCard FROM DayCard WHERE idDayCard=LAST_INSERT_ID();',
+    values: null
+};
 
 const removeMappingFromCard = (cardID, recipeID) => ({
     sql: 'DELETE FROM DayCard_has_Recipes WHERE DayCard_idDayCard=? AND Recipes_idRecipes=?;',
@@ -42,6 +57,8 @@ const removeMappingFromCard = (cardID, recipeID) => ({
 /***************************************************/
 /*                     Reducers                    */
 /***************************************************/
+
+const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 const getDayCards = async(args) => {
     if (args.idDayCard) {
@@ -58,7 +75,7 @@ const addRecipeToCard = async(args) => {
     if (args.newRecipe && args.idDayCard) {
         const [err, results] = await to(queryDB([
             recipeQuery.addRecipe(args.newRecipe.recipeName, args.newRecipe.url),
-            mapRecipeToCard(args.idDayCard),
+            mapRecipeToCardWithCardID(args.idDayCard),
             getDayCardById(args.idDayCard)
         ]));
         return err ? dbError(err, null) : transformResponse(results[2])[0];
@@ -69,6 +86,34 @@ const removeRecipeFromCard = async(args) => {
     if (args.idRecipe && args.idDayCard) {
         const [err, ] = await to(queryDB(removeMappingFromCard(args.idDayCard, args.idRecipe)));
         return err ? dbError(err, false) : true;
+    }
+};
+
+const addDayCard = async(args) => {
+    if (args.newRecipe && args.date) {
+        try {
+            let cardID;
+            const date = moment(args.date);
+            const startDate = date.startOf('day').format(DATE_FORMAT);
+            const endDate = date.endOf('day').format(DATE_FORMAT);
+            const connection = await getConnection();
+            const existingdayCard = await query(connection, getDayCardRange(startDate, endDate));
+            if (existingdayCard.results[0].idDayCard) {
+                cardID = existingdayCard.results[0].idDayCard;
+            } else {
+                await query(connection, addNewDayCard(date));
+                const cardIDResults = await query(connection, getLastUpdatedCard);
+                cardID = cardIDResults.results[0].idDayCard;
+            }
+            await query(connection, recipeQuery.addRecipe(args.newRecipe.recipeName, args.newRecipe.url));
+            await query(connection, mapRecipeToCardWithCardID(cardID));
+            const dayCardResults = await query(connection, getDayCardById(cardID));
+            endTransaction(connection);
+            return transformResponse(dayCardResults)[0];
+        } catch (e) {
+            winston.warn(e);
+            return null;
+        }    
     }
 };
 
@@ -125,5 +170,6 @@ module.exports = {
     getDayCards,
     addRecipeToCard,
     removeRecipeFromCard,
+    addDayCard,
     transformResponse
 };

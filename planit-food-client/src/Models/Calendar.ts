@@ -1,6 +1,6 @@
 import { Moment } from "moment";
 import { ApiProps } from './Api';
-import { DayCard } from "./DayCard";
+import { DayCard, AddDayCardMutatorProps } from './DayCard';
 import { AddRecipeMutatorProps, RemoveRecipeMutatorProps } from './Recipes';
 
 export type SlotInfo = {
@@ -59,7 +59,8 @@ export type queryVariables = { startDate: Moment, endDate: Moment };
 
 type ApolloActions = {
     addRecipeToCard: DayCard,
-    removeRecipeFromCard: boolean
+    removeRecipeFromCard: boolean,
+    addDayCard: DayCard
 }
 
 export type CalendarContainerProps = ApiProps<
@@ -70,6 +71,9 @@ export type CalendarContainerProps = ApiProps<
             data: ApolloActions
         },
         removeRecipeFromCardWithData: (props: RemoveRecipeMutatorProps) => {
+            data: ApolloActions
+        },
+        addDayCardWithData: (props: AddDayCardMutatorProps) => {
             data: ApolloActions
         }
     };

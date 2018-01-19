@@ -30,6 +30,17 @@ export const dayCardsRange = gql`
   }
 `;
 
+export const addDayCard = gql`
+    mutation AddDayCard($newRecipe: RecipeInput!, $date: Date!) {
+        addDayCard(newRecipe: $newRecipe, date: $date) {
+          idDayCard
+          date
+          mealTimeCode
+          recipes
+        }
+    }
+`;
+
 export const addRecipe = gql`
     mutation AddRecipeToCard($newRecipe: RecipeInput!, $idDayCard: Int!) {
         addRecipeToCard(newRecipe: $newRecipe, idDayCard: $idDayCard) {

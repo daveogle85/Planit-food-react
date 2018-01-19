@@ -50,7 +50,7 @@ exports.set = function (db) {
   return;
 };
 
-function query(connection, queryObject) {
+exports.query = function (connection, queryObject) {
   const done = new Promise((res, err) => {
     const query = connection.query(queryObject.sql, queryObject.values, function (error, results, fields) {
       winston.info(query.sql);
@@ -58,7 +58,7 @@ function query(connection, queryObject) {
       if (error) {
         winston.warn(error);
         return connection.rollback(() => {
-          err (error);
+          err(error);
         });
       }
       res({
@@ -68,14 +68,31 @@ function query(connection, queryObject) {
     }); // end query
   });
   return done;
-}
+};
 
 const getConnection = () => {
   return new Promise((res) => {
     state.db.getConnection(function async(err, connection) {
-      connection.beginTransaction((err) => res({ connection, err }));
+      connection.beginTransaction((err) => res({
+        connection,
+        err
+      }));
     });
   });
+};
+
+exports.getConnection = async function () {
+  if (state.db) {
+    // Begin transaction
+    const {
+      connection,
+      err
+    } = await getConnection();
+    if (!err) {
+      return connection;
+    }
+    winston.warn(err);
+  }
 };
 
 /**
@@ -83,12 +100,15 @@ const getConnection = () => {
  * @param {*} args a list of, or single query object containing an sql: statement and an 
  * optional values list for use with prepated statements
  */
-exports.queryDB = async (args) => {
+exports.queryDB = async(args) => {
   // console.log('args: ', args);
   if (state.db) {
     // Begin transaction
-    const { connection, err } = await getConnection();
-      // Use the connection
+    const {
+      connection,
+      err
+    } = await getConnection();
+    // Use the connection
     winston.info('Query Database: ' + args);
     if (!Array.isArray(args)) {
       args = [args];
@@ -96,21 +116,24 @@ exports.queryDB = async (args) => {
     if (err) {
       return err;
     }
-    const queries = args.map(queryObject => query(connection, queryObject));
+    const queries = args.map(queryObject => this.query(connection, queryObject));
     const resultsSet = await Promise.all(queries);
-
-    connection.commit(function (err) {
-      if (err) {
-        return connection.rollback(function () {
-          throw (err);
-        });
-      }
-      connection.release();
-    });
+    this.endTransaction(connection);
     return resultsSet;
   }
   winston.error('No database connection!');
   return null;
+};
+
+exports.endTransaction = function (connection) {
+  connection.commit(function (err) {
+    if (err) {
+      return connection.rollback(function () {
+        throw (err);
+      });
+    }
+    connection.release();
+  });
 };
 
 exports.dbError = function (err, returnValue) {

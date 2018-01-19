@@ -9,3 +9,8 @@ export type DayCard = {
 }
 
 export type MealItem = Recipe & { isPlaceholder?: boolean };
+
+export type AddDayCardMutatorProps = {
+    newRecipe: Recipe,
+    date: Moment
+}

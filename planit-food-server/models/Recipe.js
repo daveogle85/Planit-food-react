@@ -1,5 +1,5 @@
-const queryDB = require('../services/db').queryDB;
-const winston = require("../services/logger");
+// const queryDB = require('../services/db').queryDB;
+// const winston = require("../services/logger");
 
 const addRecipe = (recipeName, url) => ({
     sql: `INSERT INTO Recipes(recipeName${url ? ', url' : ''}) VALUES(?${url ? ', ?' : ''});`,

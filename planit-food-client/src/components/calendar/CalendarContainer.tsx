@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { Component } from 'react';
 import Calendar from './Calendar';
-import { graphql, compose } from 'react-apollo';
+import { compose } from 'react-apollo';
 import { DayCard } from '../../models/DayCard';
 import { ApiState } from '../../models/Api';
 import * as moment from 'moment';
 import { Moment } from 'moment';
-import { dayCardsRange, addRecipe, removeRecipe } from '../../api/dayCard';
-import { Recipe, AddRecipeMutatorProps, RemoveRecipeMutatorProps } from '../../models/Recipes';
+import { Recipe } from '../../models/Recipes';
 import { CalendarContainerProps, queryVariables } from '../../models/Calendar';
+import { addRecipeMutator, removeRecipeMutator } from '../../enhancers/recipe';
+import { fetchDayCardsRange, addDayCardMutator } from '../../enhancers/dayCard';
 
 type CalendarState = ApiState<DayCard> & { date: Moment };
 
@@ -50,6 +51,15 @@ class CalendarContainer extends Component<CalendarContainerProps, CalendarState>
         );
     }
 
+    // private createDayCard = (refetchVariables: queryVariables) => async (recipe: Recipe, date: Moment) => {
+    //     const result = await this.props.addDayCardWithData({
+    //         newRecipe: recipe,
+    //         date: date
+    //     })
+    //     this.refetch(refetchVariables);
+    //     return result.data.addDayCard;
+    // }
+
     private createRecipe = (refetchVariables: queryVariables) => async (recipe: Recipe, id: number) => {
         const result = await this.props.addRecipeToCardWithData({
             newRecipe: recipe,
@@ -77,29 +87,9 @@ class CalendarContainer extends Component<CalendarContainerProps, CalendarState>
     }
 }
 
-const addRecipeMutator = graphql(addRecipe, {
-    props: ({ mutate }) => ({
-        addRecipeToCardWithData: (recipe: AddRecipeMutatorProps) =>
-            mutate && mutate({ variables: recipe })
-    })
-});
-
-const removeRecipeMutator = graphql(removeRecipe, {
-    props: ({ mutate }) => ({
-        removeRecipeFromCardWithData: (removeRecipeProps: RemoveRecipeMutatorProps) =>
-            mutate && mutate({ variables: removeRecipeProps })
-    })
-});
-
 export default compose(
     addRecipeMutator,
     removeRecipeMutator,
-    graphql(dayCardsRange, {
-        options: {
-            variables: {
-                startDate: moment().startOf('month'),
-                endDate: moment().endOf('month')
-            }
-        }
-    }
-    ))(CalendarContainer);
+    addDayCardMutator,
+    fetchDayCardsRange,
+)(CalendarContainer);
