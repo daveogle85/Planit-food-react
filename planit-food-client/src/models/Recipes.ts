@@ -6,10 +6,11 @@ export type Recipe = {
 
 export type AddRecipeMutatorProps = {
     newRecipe: Recipe,
-    idDayCard: number
+    date: string,
+    idDayCard?: number
 }
 
 export type RemoveRecipeMutatorProps = {
     idRecipe: number,
-    idDayCard: number
+    date: string
 }

@@ -3,13 +3,13 @@ import { Component } from 'react';
 import Calendar from './Calendar';
 import { compose } from 'react-apollo';
 import { DayCard } from '../../models/DayCard';
-import { ApiState } from '../../models/Api';
+import { ApiState, DATE_FORMAT } from '../../models/Api';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { Recipe } from '../../models/Recipes';
 import { CalendarContainerProps, queryVariables } from '../../models/Calendar';
 import { addRecipeMutator, removeRecipeMutator } from '../../enhancers/recipe';
-import { fetchDayCardsRange, addDayCardMutator } from '../../enhancers/dayCard';
+import { fetchDayCardsRange } from '../../enhancers/dayCard';
 
 type CalendarState = ApiState<DayCard> & { date: Moment };
 
@@ -51,28 +51,20 @@ class CalendarContainer extends Component<CalendarContainerProps, CalendarState>
         );
     }
 
-    // private createDayCard = (refetchVariables: queryVariables) => async (recipe: Recipe, date: Moment) => {
-    //     const result = await this.props.addDayCardWithData({
-    //         newRecipe: recipe,
-    //         date: date
-    //     })
-    //     this.refetch(refetchVariables);
-    //     return result.data.addDayCard;
-    // }
-
-    private createRecipe = (refetchVariables: queryVariables) => async (recipe: Recipe, id: number) => {
+    private createRecipe = (refetchVariables: queryVariables) => async (recipe: Recipe, date: Moment, id: number) => {
         const result = await this.props.addRecipeToCardWithData({
             newRecipe: recipe,
+            date: moment(date).format(DATE_FORMAT),
             idDayCard: id
         });
         this.refetch(refetchVariables);
         return result.data.addRecipeToCard;
     }
 
-    private removeRecipe = (refetchVariables: queryVariables) => async (recipeID: number, cardId: number) => {
+    private removeRecipe = (refetchVariables: queryVariables) => async (recipeID: number, date: Moment) => {
         const result = await this.props.removeRecipeFromCardWithData({
             idRecipe: recipeID,
-            idDayCard: cardId
+            date: moment(date).format(DATE_FORMAT)
         });
         if (result.data.removeRecipeFromCard) { this.refetch(refetchVariables); }
         return result.data.removeRecipeFromCard;
@@ -90,6 +82,5 @@ class CalendarContainer extends Component<CalendarContainerProps, CalendarState>
 export default compose(
     addRecipeMutator,
     removeRecipeMutator,
-    addDayCardMutator,
     fetchDayCardsRange,
 )(CalendarContainer);

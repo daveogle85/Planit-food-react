@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import BigCalendar from 'react-big-calendar';
 import * as moment from 'moment';
-import { SlotInfo, BigCalendarProps, Event, CalendarEvent } from '../../models/Calendar';
+import { SlotInfo, BigCalendarProps, Event } from '../../models/Calendar';
 import Modal from '../common/modal/Modal';
 import DayCard from '../common/day-card/DayCard';
 import { DayCard as DayCardModel } from '../../models/DayCard';
@@ -18,14 +18,13 @@ BigCalendar.momentLocalizer(moment);
 interface CalendarState {
     currentDate: Date;
     modalOpen: boolean;
-    currentCard?: DayCardModel;
 }
 
 type CalendarProps = BigCalendarProps & {
     events?: Array<Event<DayCardModel>>,
     refetch?: (variables: {}) => void,
-    createRecipe?: (variables: {}) => (newRecipe: Recipe, dayCardId: number) => Promise<DayCardModel>,
-    removeRecipe?: (variables: {}) => (recipe: number, id: number) => Promise<boolean>
+    createRecipe?: (variables: {}) => (newRecipe: Recipe, date: Moment, dayCardId: number) => Promise<DayCardModel>,
+    removeRecipe?: (variables: {}) => (recipe: number, date: Moment) => Promise<boolean>
 };
 
 /**
@@ -97,48 +96,44 @@ class Calendar extends Component<CalendarProps, CalendarState> {
     }
 
     private onSelectSlot = (slotInfo: SlotInfo) => {
-        const selectedEvent = this.props.events ? (this.props.events as CalendarEvent[]).find((event) =>
-            event.start.isSame(slotInfo.start, 'day')) : undefined;
         this.setState({
             currentDate: slotInfo.start,
-            modalOpen: true,
-            currentCard: selectedEvent && (selectedEvent as Event<DayCardModel>).card
+            modalOpen: true
         });
     }
 
     private renderModal = () => {
-        let date = moment(this.state.currentDate);
-        let mealList: Recipe[] = [];
-        if (this.state.currentCard) {
-            date = this.state.currentCard.date;
-            mealList = this.state.currentCard.recipes;
+        const selectedEvent = this.props.events ? ((this.props.events as Event<DayCardModel>[]).find((event) =>
+            event.start.isSame(this.state.currentDate, 'day'))) : null;
+        if (this.state.currentDate && this.props.events) {
+            const currentCard = selectedEvent && (selectedEvent as Event<DayCardModel>).card;
+            return ([
+                (
+                    <DayCard
+                        id={currentCard ? currentCard.idDayCard : undefined}
+                        date={currentCard ? currentCard.date : moment(this.state.currentDate)}
+                        mealList={currentCard ? currentCard.recipes : []}
+                        key="day-card"
+                        allowEditing={true}
+                        createMeal={this.props.createRecipe && this.props.createRecipe({
+                            startDate: moment(this.state.currentDate).startOf('month').format(),
+                            endDate: moment(this.state.currentDate).endOf('month').format()
+                        })}
+                        removeMeal={this.props.removeRecipe && this.props.removeRecipe({
+                            startDate: moment(this.state.currentDate).startOf('month').format(),
+                            endDate: moment(this.state.currentDate).endOf('month').format()
+                        })}
+                    />
+                ),
+                (
+                    <div className="modal-buttons" key="buttons">
+                        <button>Expand</button>
+                        <button onClick={this.closeModal}>Done</button>
+                    </div>
+                )
+            ]);
         }
-        return ([
-            (
-                <DayCard
-                    id={this.state.currentCard && this.state.currentCard.idDayCard}
-                    date={date}
-                    mealList={mealList}
-                    key="day-card"
-                    allowEditing={true}
-                    createMeal={this.props.createRecipe && this.props.createRecipe({
-                        startDate: moment(this.state.currentDate).startOf('month').format(),
-                        endDate: moment(this.state.currentDate).endOf('month').format()
-                    })}
-                    removeMeal={this.props.removeRecipe && this.props.removeRecipe({
-                        startDate: moment(this.state.currentDate).startOf('month').format(),
-                        endDate: moment(this.state.currentDate).endOf('month').format()
-                    })}
-                />
-            ),
-            (
-                <div className="modal-buttons" key="buttons">
-                    <button>Expand</button>
-                    <button onClick={this.closeModal}>Cancel</button>
-                    <button onClick={this.closeModal}>Confirm</button>
-                </div>
-            )
-        ]);
+        return null;
     }
 
     private closeModal = () => this.setState({ modalOpen: false });

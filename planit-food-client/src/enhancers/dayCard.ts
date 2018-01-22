@@ -1,7 +1,6 @@
 import { graphql } from 'react-apollo';
-import { dayCardsRange, addDayCard } from '../api/dayCard';
+import { dayCardsRange } from '../api/dayCard';
 import * as moment from 'moment';
-import { AddDayCardMutatorProps } from '../models/DayCard';
 
 export const fetchDayCardsRange = graphql(dayCardsRange, {
     options: {
@@ -10,11 +9,4 @@ export const fetchDayCardsRange = graphql(dayCardsRange, {
             endDate: moment().endOf('month')
         }
     }
-});
-
-export const addDayCardMutator = graphql(addDayCard, {
-    props: ({ mutate }) => ({
-        addDayCardWithData: (addDayCardProps: AddDayCardMutatorProps) =>
-            mutate && mutate({ variables: addDayCardProps })
-    })
 });

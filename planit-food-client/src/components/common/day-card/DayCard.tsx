@@ -10,11 +10,11 @@ import './DayCard.css';
 
 interface DayCardProps {
     id?: number;
-    date?: Moment;
+    date: Moment;
     mealList: Recipe[];
     allowEditing?: boolean;
-    createMeal?: (meal: Recipe, id?: number) => Promise<DayCardModel>;
-    removeMeal?: (recipeID: number, id?: number) => Promise<boolean>;
+    createMeal?: (meal: Recipe, date: Moment, id?: number) => Promise<DayCardModel>;
+    removeMeal?: (recipeID: number, date: Moment) => Promise<boolean>;
 }
 
 interface DayCardState {
@@ -30,6 +30,12 @@ class DayCard extends Component<DayCardProps, DayCardState> {
         this.state = {
             mealList: props.mealList
         };
+    }
+
+    public componentWillReceiveProps(nextProps: DayCardProps) {
+        this.setState({
+            mealList: nextProps.mealList
+        });
     }
 
     public render() {
@@ -61,13 +67,14 @@ class DayCard extends Component<DayCardProps, DayCardState> {
     }
 
     private onEditSubmit = (newValue: string, mealID?: number) => mealID ?
-        () => null : this.createMeal(newValue, this.props.id)
+        () => null : this.createMeal(newValue, this.props.date, this.props.id)
 
-    private createMeal = (value: string, id?: number) => {
+    private createMeal = (value: string, date: Moment, id?: number) => {
         return this.props.createMeal && this.props.createMeal(
             {
                 recipeName: value
             },
+            date,
             id);
     }
 
@@ -95,7 +102,7 @@ class DayCard extends Component<DayCardProps, DayCardState> {
     private removeMeal = async (id: number, recipeID?: number) => {
         let removed = true;
         if (recipeID && this.props.removeMeal) {
-            removed = await this.props.removeMeal(recipeID, this.props.id);
+            removed = await this.props.removeMeal(recipeID, this.props.date);
         }
         if (removed) {
             this.setState({

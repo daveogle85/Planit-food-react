@@ -30,20 +30,9 @@ export const dayCardsRange = gql`
   }
 `;
 
-export const addDayCard = gql`
-    mutation AddDayCard($newRecipe: RecipeInput!, $date: Date!) {
-        addDayCard(newRecipe: $newRecipe, date: $date) {
-          idDayCard
-          date
-          mealTimeCode
-          recipes
-        }
-    }
-`;
-
 export const addRecipe = gql`
-    mutation AddRecipeToCard($newRecipe: RecipeInput!, $idDayCard: Int!) {
-        addRecipeToCard(newRecipe: $newRecipe, idDayCard: $idDayCard) {
+    mutation AddRecipeToCard($newRecipe: RecipeInput!, $date: Date!, $idDayCard: Int) {
+        addRecipeToCard(newRecipe: $newRecipe, date: $date, idDayCard: $idDayCard) {
           recipes {
             idRecipes
             recipeName
@@ -54,7 +43,7 @@ export const addRecipe = gql`
 `;
 
 export const removeRecipe = gql`
-    mutation RemoveRecipeFromCard($idRecipe: Int!, $idDayCard: Int!) {
-        removeRecipeFromCard(idRecipe: $idRecipe, idDayCard: $idDayCard)
+    mutation RemoveRecipeFromCard($idRecipe: Int!, $date: Date!) {
+        removeRecipeFromCard(idRecipe: $idRecipe, date: $date)
     }
 `;
