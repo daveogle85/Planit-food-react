@@ -59,7 +59,6 @@ const root = {
     getDayCards: dayCardModel.getDayCards,
     addRecipeToCard: dayCardModel.addRecipeToCard,
     removeRecipeFromCard: dayCardModel.removeRecipeFromCard,
-    addDayCard: dayCardModel.addDayCard,
     createRecipe: recipesModel.createRecipe
 };
 

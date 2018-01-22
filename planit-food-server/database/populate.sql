@@ -1,23 +1,25 @@
 -- SELECT * FROM DayCard_has_Recipes INNER JOIN DayCard ON DayCard_has_Recipes.DayCard_idDayCard = idDayCard JOIN Recipes ON DayCard_has_Recipes.Recipes_idRecipes = idRecipes;
 
+-- SELECT * FROM DayCard_has_Recipes INNER JOIN DayCard ON DayCard_has_Recipes.DayCard_idDayCard = idDayCard JOIN Recipes ON DayCard_has_Recipes.Recipes_idRecipes = idRecipes WHERE idDayCard=3 ;
+
 -- TRUNCATE TABLE planit_food_db.DayCard_has_Recipes
 
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(3, 1);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(3, 2);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(4, 1);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(4, 3);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(4, 6);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(5, 5);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(6, 4);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(6, 6);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(7, 8);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(7, 7);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(8, 2);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(8, 6);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(8, 8);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(9, 1);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(10, 3);
--- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(10, 5);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180113, 1);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180113, 2);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180114, 1);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180114, 3);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180114, 6);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180115, 5);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180112, 4);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180112, 6);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180111, 8);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180111, 7);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180110, 2);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180110, 6);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180110, 8);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180109, 1);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180109, 3);
+-- INSERT INTO planit_food_db.DayCard_has_Recipes(DayCard_idDayCard, Recipes_idRecipes) VALUES(20180109, 5);
 
 -- CREATE DATABASE `plainitfood-db`;
 
@@ -30,14 +32,14 @@
 -- INSERT INTO `planit_food_db`.Recipes(recipeName) VALUES('meal7');
 -- INSERT INTO `planit_food_db`.Recipes(recipeName) VALUES('meal8');
 
--- INSERT INTO `planit_food_db`.DayCard(`date`) VALUES('2018-01-15 10:13:22');
--- INSERT INTO `planit_food_db`.DayCard(`date`) VALUES('2018-01-14 10:13:22');
--- INSERT INTO `planit_food_db`.DayCard(`date`) VALUES('2018-01-13 10:13:22');
--- INSERT INTO `planit_food_db`.DayCard(`date`) VALUES('2018-01-12 10:13:22');
--- INSERT INTO `planit_food_db`.DayCard(`date`) VALUES('2018-01-11 10:13:22');
--- INSERT INTO `planit_food_db`.DayCard(`date`) VALUES('2018-01-10 10:13:22');
--- INSERT INTO `planit_food_db`.DayCard(`date`) VALUES('2018-01-09 10:13:22');
--- INSERT INTO `planit_food_db`.DayCard(`date`) VALUES('2018-01-07 10:13:22');
+-- INSERT INTO `planit_food_db`.DayCard(idDayCard, `date`) VALUES(20180115, '2018-01-15 10:13:22');
+-- INSERT INTO `planit_food_db`.DayCard(idDayCard, `date`) VALUES(20180114, '2018-01-14 10:13:22');
+-- INSERT INTO `planit_food_db`.DayCard(idDayCard, `date`) VALUES(20180113, '2018-01-13 10:13:22');
+-- INSERT INTO `planit_food_db`.DayCard(idDayCard, `date`) VALUES(20180112, '2018-01-12 10:13:22');
+-- INSERT INTO `planit_food_db`.DayCard(idDayCard, `date`) VALUES(20180111, '2018-01-11 10:13:22');
+-- INSERT INTO `planit_food_db`.DayCard(idDayCard, `date`) VALUES(20180110, '2018-01-10 10:13:22');
+-- INSERT INTO `planit_food_db`.DayCard(idDayCard, `date`) VALUES(20180109, '2018-01-09 10:13:22');
+-- INSERT INTO `planit_food_db`.DayCard(idDayCard, `date`) VALUES(20180107, '2018-01-07 10:13:22');
 
 -- INSERT INTO `plainitfood-db`.DayCard(meal_name, meal_date) VALUES('meal 2', '2018-01-15 10:13:22');
 -- INSERT INTO `plainitfood-db`.DayCard(meal_name, meal_date) VALUES('meal 3', '2018-01-14 10:13:22');
@@ -48,3 +50,5 @@
 -- INSERT INTO `plainitfood-db`.DayCard(meal_name, meal_date) VALUES('meal 8', '2018-01-09 10:13:22');
 
 -- DELETE FROM planit_food_db.DayCard WHERE idDayCard=2;
+-- USE planit_food_db;
+-- SELECT * FROM DayCard WHERE `planit_food_db`.DayCard.idDayCard=LAST_INSERT_ID();

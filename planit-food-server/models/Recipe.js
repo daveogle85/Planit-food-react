@@ -17,7 +17,7 @@ const deleteRecipe = (recipeID) => ({
  * @param {*} context 
  * @param {*} obj 
  */
-const createRecipe = (args, context, obj) => {
+const createRecipe = (args) => {
     console.log(args);
     return [{
         idRecipes: 1,

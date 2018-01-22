@@ -24,7 +24,7 @@ interface CalendarState {
 type CalendarProps = BigCalendarProps & {
     events?: Array<Event<DayCardModel>>,
     refetch?: (variables: {}) => void,
-    createRecipe?: (variables: {}) => (newRecipe: Recipe, dayCardId: number) => Promise<DayCardModel>
+    createRecipe?: (variables: {}) => (newRecipe: Recipe, dayCardId: number) => Promise<DayCardModel>,
     removeRecipe?: (variables: {}) => (recipe: number, id: number) => Promise<boolean>
 };
 
@@ -116,7 +116,7 @@ class Calendar extends Component<CalendarProps, CalendarState> {
         return ([
             (
                 <DayCard
-                    id={this.state.currentCard && this.state.currentCard.idDayCard || -1}
+                    id={this.state.currentCard && this.state.currentCard.idDayCard}
                     date={date}
                     mealList={mealList}
                     key="day-card"

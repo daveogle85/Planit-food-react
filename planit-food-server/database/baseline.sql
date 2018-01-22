@@ -77,7 +77,7 @@ CREATE INDEX `recipeName` ON `planit_food_db`.`Recipes` (`recipeName` ASC);
 DROP TABLE IF EXISTS `planit_food_db`.`DayCard` ;
 
 CREATE TABLE IF NOT EXISTS `planit_food_db`.`DayCard` (
-  `idDayCard` INT NOT NULL AUTO_INCREMENT,
+  `idDayCard` INT NOT NULL,
   `date` DATE NOT NULL,
   `mealTimeCode` CHAR(1) NULL,
   PRIMARY KEY (`idDayCard`, `date`))

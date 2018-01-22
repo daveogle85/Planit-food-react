@@ -81,7 +81,7 @@ const getConnection = () => {
   });
 };
 
-exports.getConnection = async function () {
+exports.startTransaction = async function () {
   if (state.db) {
     // Begin transaction
     const {

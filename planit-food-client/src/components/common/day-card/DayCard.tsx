@@ -9,12 +9,12 @@ import { MealItem as MealItemModel, DayCard as DayCardModel } from '../../../mod
 import './DayCard.css';
 
 interface DayCardProps {
-    id: number;
+    id?: number;
     date?: Moment;
     mealList: Recipe[];
     allowEditing?: boolean;
-    createMeal?: (meal: Recipe, id: number) => Promise<DayCardModel>;
-    removeMeal?: (recipeID: number, id: number) => Promise<boolean>;
+    createMeal?: (meal: Recipe, id?: number) => Promise<DayCardModel>;
+    removeMeal?: (recipeID: number, id?: number) => Promise<boolean>;
 }
 
 interface DayCardState {
@@ -63,7 +63,7 @@ class DayCard extends Component<DayCardProps, DayCardState> {
     private onEditSubmit = (newValue: string, mealID?: number) => mealID ?
         () => null : this.createMeal(newValue, this.props.id)
 
-    private createMeal = (value: string, id: number) => {
+    private createMeal = (value: string, id?: number) => {
         return this.props.createMeal && this.props.createMeal(
             {
                 recipeName: value
