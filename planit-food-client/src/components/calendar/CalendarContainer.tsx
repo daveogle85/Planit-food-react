@@ -7,7 +7,7 @@ import { ApiState, DATE_FORMAT } from '../../models/Api';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { Recipe } from '../../models/Recipes';
-import { CalendarContainerProps, queryVariables } from '../../models/Calendar';
+import { CalendarContainerProps, calendarQueryVariables } from '../../models/Calendar';
 import { addRecipeMutator, removeRecipeMutator } from '../../enhancers/recipe';
 import { fetchDayCardsRange } from '../../enhancers/dayCard';
 
@@ -51,7 +51,8 @@ class CalendarContainer extends Component<CalendarContainerProps, CalendarState>
         );
     }
 
-    private createRecipe = (refetchVariables: queryVariables) => async (recipe: Recipe, date: Moment, id: number) => {
+    private createRecipe = (refetchVariables: calendarQueryVariables) =>
+        async (recipe: Recipe, date: Moment, id: number) => {
         const result = await this.props.addRecipeToCardWithData({
             newRecipe: recipe,
             date: moment(date).format(DATE_FORMAT),
@@ -61,7 +62,7 @@ class CalendarContainer extends Component<CalendarContainerProps, CalendarState>
         return result.data.addRecipeToCard;
     }
 
-    private removeRecipe = (refetchVariables: queryVariables) => async (recipeID: number, date: Moment) => {
+    private removeRecipe = (refetchVariables: calendarQueryVariables) => async (recipeID: number, date: Moment) => {
         const result = await this.props.removeRecipeFromCardWithData({
             idRecipe: recipeID,
             date: moment(date).format(DATE_FORMAT)
@@ -70,7 +71,7 @@ class CalendarContainer extends Component<CalendarContainerProps, CalendarState>
         return result.data.removeRecipeFromCard;
     }
 
-    private refetch = (variables: queryVariables) => {
+    private refetch = (variables: calendarQueryVariables) => {
         this.props.data.refetch(variables).then((res) => this.setState({
             data: res.data.getDayCards,
             error: res.data.error,

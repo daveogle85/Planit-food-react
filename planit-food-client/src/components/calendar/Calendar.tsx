@@ -46,6 +46,9 @@ class Calendar extends Component<CalendarProps, CalendarState> {
                 <Link to={`/`} className="nav-link">
                     Go to Home
                 </Link>
+                <Link to={`/recipes`} className="nav-link">
+                    Go to Recipes
+                </Link>
                 <div className="big-calendar">
                     <BigCalendar
                         views={['month']}

@@ -55,9 +55,9 @@ export interface BigCalendarProps {
     elementProps?: React.HTMLAttributes<HTMLElement>;
 }
 
-export type queryVariables = { startDate: Moment, endDate: Moment };
+export type calendarQueryVariables = { startDate: Moment, endDate: Moment };
 
-type ApolloActions = {
+type CalendarApolloActions = {
     addRecipeToCard: DayCard,
     removeRecipeFromCard: boolean,
     addDayCard: DayCard
@@ -65,12 +65,12 @@ type ApolloActions = {
 
 export type CalendarContainerProps = ApiProps<
     { getDayCards: DayCard[] },
-    queryVariables,
-    ApolloActions> & {
+    calendarQueryVariables,
+    CalendarApolloActions> & {
         addRecipeToCardWithData: (props: AddRecipeMutatorProps) => {
-            data: ApolloActions
+            data: CalendarApolloActions
         },
         removeRecipeFromCardWithData: (props: RemoveRecipeMutatorProps) => {
-            data: ApolloActions
+            data: CalendarApolloActions
         }
     };

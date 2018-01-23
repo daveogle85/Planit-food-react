@@ -1,3 +1,35 @@
+@import '../../styles/mixins.scss';
+
 .Recipes {
-    
+
+    .nav-link {
+        @include nav-item;
+    }
+    .main-content {
+        
+        @include main-page;
+
+        h2 {
+            text-align: center;
+        }
+
+        li {
+            list-style-type: none;
+            line-height: 50px;
+            border: 1px solid #dadada;
+            height: 50px;
+            border-bottom: none;
+            padding-left: 20px;
+            background-color: #efffff;
+            cursor: pointer;
+        }
+
+        li:hover {
+            background-color: #c7ffff;
+        }
+
+        li:last-child {
+            border-bottom: 1px solid #dadada;
+        }
+    }
 }

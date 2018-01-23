@@ -1,3 +1,5 @@
+import { ApiProps } from './Api';
+
 export type Recipe = {
     idRecipes?: number,
     recipeName: string,
@@ -14,3 +16,15 @@ export type RemoveRecipeMutatorProps = {
     idRecipe: number,
     date: string
 }
+
+// export type recipeQueryVariables = { startDate: Moment, endDate: Moment };
+
+// type RecipeApolloActions = {
+//     addRecipeToCard: DayCard,
+//     removeRecipeFromCard: boolean,
+//     addDayCard: DayCard
+// }
+
+export type RecipesContainerProps = ApiProps<
+    { getRecipes: Recipe[] },
+    {}, {}>

@@ -143,7 +143,7 @@ const removeRecipeFromCard = async(args) => {
 /**
  * Transform the db object to the required graphql object
  */
-function transformResponse(response) { // TODO FIX
+function transformResponse(response) {
     if (!response || !response.results) {
         return null;
     }

@@ -1,6 +1,7 @@
 import { graphql } from 'react-apollo';
 import { addRecipe, removeRecipe } from '../api/dayCard';
 import { AddRecipeMutatorProps, RemoveRecipeMutatorProps } from '../models/Recipes';
+import { allRecipes } from '../api/recipe';
 
 export const addRecipeMutator = graphql(addRecipe, {
     props: ({ mutate }) => ({
@@ -15,3 +16,5 @@ export const removeRecipeMutator = graphql(removeRecipe, {
             mutate && mutate({ variables: removeRecipeProps })
     })
 });
+
+export const fetchRecipes = graphql(allRecipes);

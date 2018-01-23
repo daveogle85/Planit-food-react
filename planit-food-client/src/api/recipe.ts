@@ -9,3 +9,13 @@ export const newRecipe = gql`
         }
     }
 `;
+
+export const allRecipes = gql`
+    query AllRecipes {
+        getRecipes {
+            idRecipes
+            recipeName
+            url
+        }
+    }
+`;
