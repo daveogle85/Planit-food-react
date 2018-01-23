@@ -23,9 +23,12 @@ class Home extends Component<HomeProps> {
     public render() {
         return (
             <div className="Home">
-                <Link to={`/calendar`} className="nav-link">
-                    Go to calendar
+                <Link to={'/calendar'} className="nav-link">
+                    Go to Calendar
                 </Link>
+                <Link to={'recipes'} className="nav-link">
+                    Go to Recipes
+                </Link>    
                 <CardCarousel
                     centerMode={true}
                     centerSlidePercentage={40}

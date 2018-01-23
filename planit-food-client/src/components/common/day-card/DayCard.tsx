@@ -42,7 +42,7 @@ class DayCard extends Component<DayCardProps, DayCardState> {
         return (
             <div className="day-card">
                 <div className="day-card-date">
-                    <div className="day">test</div>
+                    <div className="day">{moment(this.props.date).format('dddd')}</div>
                     <div className="date">{moment(this.props.date).format('ll')}</div>
                 </div>
                 <form className="meal-list">
