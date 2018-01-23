@@ -5,6 +5,13 @@ const recipeSchema = `
     idRecipes: Int!
     recipeName: String!
     url: String
+    tags: [Tag]
+  }
+
+  type Tag {
+    idTags: Int!
+    tagName: String!
+    tagColour: String
   }
 `;
 

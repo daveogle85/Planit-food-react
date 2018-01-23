@@ -52,3 +52,21 @@
 -- DELETE FROM planit_food_db.DayCard WHERE idDayCard=2;
 -- USE planit_food_db;
 -- SELECT * FROM DayCard WHERE `planit_food_db`.DayCard.idDayCard=LAST_INSERT_ID();
+
+-- INSERT INTO planit_food_db.Tags(tagName, tagColour) VALUES('VEGETARIAN', 'GREEN');
+-- INSERT INTO planit_food_db.Tags(tagName, tagColour) VALUES('QUICK', 'YELLOW');
+-- INSERT INTO planit_food_db.Tags(tagName, tagColour) VALUES('FISH', 'BLUE');
+-- INSERT INTO planit_food_db.Tags(tagName, tagColour) VALUES('PORK', 'RED');
+-- INSERT INTO planit_food_db.Tags(tagName, tagColour) VALUES('LONG COOK', 'PURPLE');
+
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(1, 1);
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(2, 2);
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(2, 3);
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(3, 4);
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(4, 2);
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(4, 3);
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(4, 4);
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(4, 5);
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(5, 5);
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(2, 8);
+-- INSERT INTO planit_food_db.Tags_has_Recipes(Tags_idTags, Recipes_idRecipes) VALUES(3, 8);
