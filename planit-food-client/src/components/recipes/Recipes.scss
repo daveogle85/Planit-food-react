@@ -14,6 +14,9 @@
         }
 
         li {
+            @include tag;
+            display: flex;
+            align-items: center;
             list-style-type: none;
             line-height: 50px;
             border: 1px solid #dadada;
@@ -22,6 +25,9 @@
             padding-left: 20px;
             background-color: #efffff;
             cursor: pointer;
+            .tag {
+                margin-left: 15px;
+            }
         }
 
         li:hover {

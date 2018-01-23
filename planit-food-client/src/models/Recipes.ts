@@ -1,9 +1,11 @@
 import { ApiProps } from './Api';
+import { Tag } from './Tags';
 
 export type Recipe = {
     idRecipes?: number,
     recipeName: string,
     url?: string
+    tags?: Tag[]
 }
 
 export type AddRecipeMutatorProps = {

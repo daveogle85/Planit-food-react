@@ -16,3 +16,31 @@
     padding: 50px;
     z-index: -1;
 }
+
+@mixin tag {
+    .tag {
+        display: flex;
+        align-items: center;
+        border: 2px solid #918d8d;
+        border-radius: 10px;
+        padding: 5px;
+        text-align: center;
+        height: 20px;
+
+        &[data-colour="GREEN"] {
+            background-color: #659665;
+        }
+        &[data-colour="RED"] {
+            background-color: rgb(218, 51, 51);
+        }
+        &[data-colour="YELLOW"] {
+            background-color: rgb(255, 255, 143);
+        }
+        &[data-colour="BLUE"] {
+            background-color: rgb(151, 151, 255);
+        }
+        &[data-colour="PURPLE"] {
+            background-color: rgb(124, 69, 124);
+        }
+    }
+}

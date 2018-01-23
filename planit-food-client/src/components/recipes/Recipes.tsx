@@ -25,8 +25,17 @@ class Recipes extends Component<RecipesProps> {
                     <ul className="recipe-list">
                         {
                             this.props.recipes.map((r) => (
-                                <li key={r.idRecipes}>{r.recipeName}</li>
-                        ))}
+                                <li key={r.idRecipes}>{r.recipeName}
+                                    {r.tags && r.tags.map((t, i) => (
+                                        <div
+                                            key={i.toString() + t.idTag}
+                                            className={'tag'}
+                                            data-colour={t.tagColour}
+                                        >{t.tagName}
+                                        </div>
+                                    ))}
+                                </li>
+                            ))}
                     </ul>
                 </div>
             </div>

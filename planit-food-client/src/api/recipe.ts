@@ -16,6 +16,11 @@ export const allRecipes = gql`
             idRecipes
             recipeName
             url
+            tags {
+                idTags
+                tagName
+                tagColour
+            }
         }
     }
 `;
