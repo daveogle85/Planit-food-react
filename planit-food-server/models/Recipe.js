@@ -23,6 +23,11 @@ const getAllRecipes = {
     values: null
 };
 
+const getRecipesContains = (contains) => ({
+    sql: 'SELECT * FROM Recipes WHERE recipeName LIKE ?',
+    values: [`%${contains}%`]
+});
+
 const getTagsForRecipesQuery = (ids) => {
     let sqlValues = '';
     ids.forEach((id, i) => {
@@ -50,14 +55,16 @@ const createRecipe = (args) => {
     }];
 };
 
-const getRecipes = async(args) => {
+const getRecipes = async (args) => {
+    let [err, recipes] = [null, null];
     if (args.name) {
         return console.log(args.name);
     }
     if (args.nameContains) {
-        return console.log(args.nameContains);
-    }
-    const [err, recipes] = await to(queryDB(getAllRecipes));
+        [err, recipes] = await to(queryDB(getRecipesContains(args.nameContains)));
+    } else {
+        [err, recipes] = await to(queryDB(getAllRecipes));
+    }    
     if (err) {
         return dbError(err, null);
     }

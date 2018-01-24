@@ -11,8 +11,8 @@ export const newRecipe = gql`
 `;
 
 export const allRecipes = gql`
-    query AllRecipes {
-        getRecipes {
+    query AllRecipes($nameContains: String) {
+        getRecipes(nameContains: $nameContains) {
             idRecipes
             recipeName
             url

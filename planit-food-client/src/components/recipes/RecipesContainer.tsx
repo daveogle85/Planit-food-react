@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import Recipes from './Recipes';
 import { ApiState } from '../../models/Api';
-import { Recipe, RecipesContainerProps } from '../../models/Recipes';
+import { Recipe, RecipesContainerProps, recipesQueryVariables } from '../../models/Recipes';
 import { compose } from 'react-apollo';
 import { fetchRecipes } from '../../enhancers/recipe';
 
@@ -29,8 +29,20 @@ class RecipesContainer extends Component<RecipesContainerProps, RecipesState> {
 
     public render() {
         return (
-            <Recipes recipes={this.state.data || []}/>
+            <Recipes
+                recipes={this.state.data || []}
+                filterRecipes={this.fetchRecipeContains}
+            />
         );
+    }
+
+    private fetchRecipeContains = (name: string) => {
+        const variables: recipesQueryVariables = { nameContains: name };
+        this.props.data.refetch(variables).then((res) => res.data && this.setState({
+            data: res.data.getRecipes,
+            error: res.data.error,
+            loading: res.data.loading
+        }));
     }
 }
 

@@ -5,7 +5,8 @@
   "scripts": {
     "build": "cd ./planit-food-server && npm i && npm run build && cd ../planit-food-client && npm i && npm run build",
     "start": "concurrently \"cd ./planit-food-client && npm start\" \"cd ./planit-food-server && npm start\"",
-    "test": "cd ./planit-food-server && npm test && cd ../planit-food-client && npm test"
+    "test": "cd ./planit-food-server && npm test && cd ../planit-food-client && npm test",
+    "clear-logs": "cd ./planit-food-server/logs && rm *.log"
   },
   "repository": {
     "type": "git",

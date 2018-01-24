@@ -19,14 +19,16 @@ export type RemoveRecipeMutatorProps = {
     date: string
 }
 
-// export type recipeQueryVariables = { startDate: Moment, endDate: Moment };
+type RecipeApolloActions = {
+    fetchRecipeContains: Recipe[]
+}
 
-// type RecipeApolloActions = {
-//     addRecipeToCard: DayCard,
-//     removeRecipeFromCard: boolean,
-//     addDayCard: DayCard
-// }
+export type recipesQueryVariables = { nameContains: string };
 
 export type RecipesContainerProps = ApiProps<
     { getRecipes: Recipe[] },
-    {}, {}>
+    recipesQueryVariables, RecipeApolloActions> & {
+    fetchRecipeContainsWithData: (props: recipesQueryVariables) => {
+            data: RecipeApolloActions
+        }
+    }

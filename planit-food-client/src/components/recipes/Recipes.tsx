@@ -2,11 +2,13 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Recipe } from '../../models/Recipes';
 import { Link } from 'react-router-dom';
+import Search from '../common/search/Search';
 
 import './Recipes.css';
 
 type RecipesProps = {
     recipes: Recipe[]
+    filterRecipes: (contains: string) => void
 };
 
 class Recipes extends Component<RecipesProps> {
@@ -22,6 +24,9 @@ class Recipes extends Component<RecipesProps> {
                 </Link>
                 <div className="main-content">
                     <h2>Recipes</h2>
+                    <Search
+                        onFilterClick={this.props.filterRecipes}
+                    />
                     <ul className="recipe-list">
                         {
                             this.props.recipes.map((r) => (
